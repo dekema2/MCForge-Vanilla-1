@@ -153,7 +153,6 @@ namespace MCForge.Gui
                 //Server.s.Log("Lists updated!");
             }; UpdateListTimer.Start();
 
-
         }
 
         public void RunOnUiThread(Action act)

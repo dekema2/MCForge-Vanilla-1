@@ -335,7 +335,7 @@ namespace MCForge
                 socket = s;
                 ip = socket.RemoteEndPoint.ToString().Split(':')[0];
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Server.ErrorLog(e);
             }
@@ -343,9 +343,10 @@ namespace MCForge
         }
         public void Start()
         {
-            try{
+            try
+            {
 
-            Server.s.Log(ip + " connected to the server.");
+                Server.s.Log(ip + " connected to the server.");
 
                 for (byte i = 0; i < 128; ++i) bindings[i] = i;
 
@@ -563,15 +564,10 @@ namespace MCForge
         void IORead()
         {
 
-            while (socket != null && socket.Connected)
+            while (socket != null && socket.Connected && !disconnected)
             {
                 try
                 {
-                    if (!Stream.DataAvailable)
-                    {
-                        Thread.Sleep(20);
-                        continue;
-                    }
                     var read = (PacketID)Reader.ReadByte();
                     switch (read)
                     {
@@ -600,8 +596,17 @@ namespace MCForge
                             break;
                         default:
 
-                            if (!dontmindme)
-                                Kick(string.Format("Unhandled message id \"{0}\"!", read));
+                            if (dontmindme)
+                            {
+                                Kick("Unexpected byte recieved");
+                                Server.s.Log("Disconnected");
+                                socket.Close();
+                                disconnected = true;
+                                Reader.Close();
+                                Stream.Close();
+                                return;
+
+                            }
                             else
                                 Server.s.Log(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
                             return;
@@ -613,6 +618,12 @@ namespace MCForge
                 catch (SocketException)
                 {
                     Disconnect();
+                    return;
+                }
+                catch (IOException)
+                {
+                    Disconnect();
+                    return;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -622,16 +633,16 @@ namespace MCForge
                     if (connections.Contains(this))
                         connections.Remove(this);
                     disconnected = true;
+                    return;
                 }
                 catch (Exception e)
                 {
                     Server.ErrorLog(e);
                     Kick("Error!");
+                    return;
                 }
-
-
             }
-            Disconnect();
+          //  Disconnect();
         }
 
         void HandleLogin()
@@ -1172,8 +1183,8 @@ namespace MCForge
 
             if (Server.verifyadmins && adminpen)
             {
-                    SendBlockchange(x, y, z, b);
-                   SendMessage("&cYou must use &a/pass [Password]&c to verify!");
+                SendBlockchange(x, y, z, b);
+                SendMessage("&cYou must use &a/pass [Password]&c to verify!");
             }
 
             if (Server.ZombieModeOn && (action == 1 || (action == 0 && this.painting)))
@@ -3526,7 +3537,7 @@ changed |= 4;*/
             {
                 return message;
             }
-            
+
         }
 
         public static void GlobalChatWorld(Player from, string message, bool showname)
@@ -3740,7 +3751,7 @@ changed |= 4;*/
 
         public void leftGame(string kickString = "", bool skip = false)
         {
-
+            if (disconnected) return;
             //Umm...fixed?
             if (name == "")
             {
@@ -3753,18 +3764,8 @@ changed |= 4;*/
                 return;
             }
             ////If player has been found in the reviewlist he will be removed
-            bool leavetest = false;
-            foreach (string testwho2 in Server.reviewlist)
-            {
-                if (testwho2 == name)
-                {
-                    leavetest = true;
-                }
-            }
-            if (leavetest)
-            {
+            if (Server.reviewlist.Contains(name))
                 Server.reviewlist.Remove(name);
-            }
             try
             {
                 SaveUndo();
@@ -3910,7 +3911,7 @@ changed |= 4;*/
             catch (Exception e) { Server.ErrorLog(e); }
             finally
             {
-                CloseSocket(); 
+                CloseSocket();
                 this.Dispose();
             }
         }
