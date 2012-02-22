@@ -3890,24 +3890,12 @@ changed |= 4;*/
                         //Server.ErrorLog(e);
                     }
 
-                    /*if (Server.AutoLoad && level.unload)
-{
-
-foreach (Player pl in Player.players)
-if (pl.level == level) hasplayers = true;
-if (!level.name.Contains("Museum " + Server.DefaultColor) && hasplayers == false)
-{
-level.Unload();
-}
-}*/
 
                     if (Server.AutoLoad && level.unload && !level.name.Contains("Museum " + Server.DefaultColor) && IsAloneOnCurrentLevel())
                         level.Unload(true);
 
                     if (PlayerDisconnect != null)
                         PlayerDisconnect(this, kickString);
-
-                    this.Dispose();
                 }
                 else
                 {
@@ -3922,7 +3910,8 @@ level.Unload();
             catch (Exception e) { Server.ErrorLog(e); }
             finally
             {
-                CloseSocket();
+                CloseSocket(); 
+                this.Dispose();
             }
         }
 
@@ -3976,11 +3965,17 @@ level.Unload();
             spamBlockLog.Clear();
             //spamChatLog.Clear();
             spyChatRooms.Clear();
-            /*try
-{
-//this.commThread.Abort();
-}
-catch { }*/
+
+            if (Stream != null)
+            {
+                Stream.Close();
+                Stream = null;
+            }
+            if (Reader != null)
+            {
+                Reader.Close();
+                Reader = null;
+            }
         }
         //fixed undo code
         public bool IsAloneOnCurrentLevel()
@@ -4429,14 +4424,7 @@ Next: continue;
         }
         public bool EnoughMoney(int amount)
         {
-            if (this.money >= amount)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return money >= amount;
         }
         public void ReviewTimer()
         {
