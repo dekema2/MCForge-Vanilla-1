@@ -1,3 +1,11 @@
+v5.5.0.1
+-Fixed Players not disconnecting under mono.
+-Fixed /Jail not working if not used by console.
+-Fixed Crashes with the -1 value error.
+-Fixed console not being able to use global.
+-Fixed where unloading a level will say it isnt loaded even if it was loaded.
+-Possibly fixed the minimizing bug (i cant reproduce it to test).
+
 v5.5.0.0
 -Added a Global Chat Control Panel for Global Chat Moderators and MCForge Developers.
 	-Allows for muting of individual players on a server. 
