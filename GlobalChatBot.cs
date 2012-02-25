@@ -103,7 +103,7 @@ namespace MCForge
         {
             //string allowedchars = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./!@#$%^*()_+QWERTYUIOPASDFGHJKL:\"ZXCVBNM<>? ";
             //string msg = message;
-            if (message.Contains("^UPDATEGLOBALSETTINGS"))
+            if (message.Contains("^UGCS"))
             {
                 
                 Server.UpdateGlobalSettings();
@@ -120,6 +120,21 @@ namespace MCForge
                             connection.Sender.PublicMessage(channel, "^IP " + p.name + ": " + p.ip);
                         }                        
                     }
+                }
+            }
+            if (message.Contains("^GETINFO "))
+            {
+                if (Server.GlobalChatNick == message.Split(' ')[1])
+                {
+                    if (Server.UseGlobalChat && IsConnected())
+                    {
+                        connection.Sender.PublicMessage(channel, "^NAME: " + Server.name);
+                        connection.Sender.PublicMessage(channel, "^MOTD: " + Server.motd);
+                        connection.Sender.PublicMessage(channel, "^VERSION: " + Server.version);
+                        connection.Sender.PublicMessage(channel, "^GLOBAL NAME: " + Server.GlobalChatNick);
+                        connection.Sender.PublicMessage(channel, "^URL: " + Server.URL);
+                        connection.Sender.PublicMessage(channel, "^PLAYERS: " + Player.players.Count + "/" + Server.players);
+                    } 
                 }
             }
             if (message.StartsWith("^")) { return; }
