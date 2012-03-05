@@ -3300,7 +3300,9 @@ changed |= 4;*/
             }
         }
 
-        public void leftGame(string kickString = "", bool skip = false) {
+        public void leftGame(string kickString = "", bool skip = false){
+
+            OnPlayerDisconnectEvent.Call(this, kickString);
 
             //Umm...fixed?
             if (name == "") {

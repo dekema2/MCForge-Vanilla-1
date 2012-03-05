@@ -189,10 +189,6 @@ namespace MCForge
                     }
                     fs.Close();
                 }
-                catch
-                {
-
-                }
                 finally
                 {
                     fs.Dispose();
@@ -225,19 +221,18 @@ namespace MCForge
 
         public static void Dispose()
         {
-            if (!_disposed)
+            if (_disposed)
+                return;
+            _disposed = true;
+            lock (_lockObject)
             {
-                _disposed = true;
-                lock (_lockObject)
+                if (_errorCache.Count > 0)
                 {
-                    if (_errorCache.Count > 0)
-                    {
-                        FlushCache(_errorPath, _errorCache);
-                    }
-
-                    _messageCache.Clear();
-                    Monitor.Pulse(_lockObject);
+                    FlushCache(_errorPath, _errorCache);
                 }
+
+                _messageCache.Clear();
+                Monitor.Pulse(_lockObject);
             }
         }
 

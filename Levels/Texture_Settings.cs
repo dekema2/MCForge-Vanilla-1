@@ -71,10 +71,7 @@ namespace MCForge.Levels.Textures
         }
         public void GlobalSendDetail(string text = "")
         {
-            Player.players.ForEach(delegate(Player p)
-            {
-                SendDetail(p, text);
-            });
+            Player.players.ForEach(p => SendDetail(p, text));
         }
         #endregion
 
@@ -95,7 +92,7 @@ namespace MCForge.Levels.Textures
         #region ==CONFIG==
         public void SaveSettings()
         {
-            File.WriteAllLines("extra/cfg/" + l.name + ".internal", new string[] { "USE:" + enabled, "AUTOU:" + autou, "GROUP:" + lowest.name });
+            File.WriteAllLines("extra/cfg/" + l.name + ".internal", new[] { "USE:" + enabled, "AUTOU:" + autou, "GROUP:" + lowest.name });
         }
         public void LoadSettings()
         {
@@ -113,9 +110,7 @@ namespace MCForge.Levels.Textures
                         autou = bool.Parse(value);
                         break;
                     case "GROUP":
-                        lowest = Group.Find(value);
-                        if (lowest == null)
-                            lowest = Group.Find(Server.defaultRank);
+                        lowest = Group.Find(value) ?? Group.Find(Server.defaultRank);
                         break;
                 }
             }
@@ -357,9 +352,9 @@ namespace MCForge.Levels.Textures
         public void ServeCfg(Player p, byte[] buffer)
         {
             var stream = new NetworkStream(p.socket);
-            using (StreamReader reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream))
             {
-                using (StreamWriter textWriter = new StreamWriter(stream, Encoding.ASCII))
+                using (var textWriter = new StreamWriter(stream, Encoding.ASCII))
                 {
                     string firstLine = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
                     var match = HttpFirstLine.Match(firstLine);
