@@ -20,8 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
-namespace MCForge.Commands
-{
+namespace MCForge.Commands {
     public class CmdUndo : Command {
         public override string name { get { return "undo"; } }
         public override string shortcut { get { return "u"; } }
@@ -37,13 +36,12 @@ namespace MCForge.Commands
             if (p != null)
                 p.RedoBuffer.Clear();
 
-            if (message == "") {
+            if (message == ""){
                 if (p == null) {
                     Player.SendMessage(null, "Console doesn't have an undo buffer.");
                     return;
-                } else {
-                    message = p.name.ToLower() + " 30";
                 }
+                message = p.name.ToLower() + " 30";
             }
 
             try {
@@ -53,7 +51,8 @@ namespace MCForge.Commands
                     undoPhysics = message.Split(' ')[0].ToLower() == "physics";
                     message = message.Split(' ')[1].ToLower();
 
-                } else {
+                }
+                else {
                     who = (p == null || message.ToLower() == "physics") ? null : p;
                     undoPhysics = message.ToLower() == "physics";
                 }
@@ -63,7 +62,8 @@ namespace MCForge.Commands
                     seconds = ((message.ToLower() != "all") ? long.Parse(message) : int.MaxValue);
                 else
                     seconds = getAllowed(p, message.ToLower());
-            } catch {
+            }
+            catch {
                 Player.SendMessage(p, "Invalid seconds, or you're unable to use /xundo. Using 30 seconds."); //only run if seconds is an invalid number
                 seconds = 30;
             }
@@ -88,23 +88,27 @@ namespace MCForge.Commands
                                 if (p != null) p.RedoBuffer.Add(Pos);
                                 who.UndoBuffer.RemoveAt(CurrentPos);
                             }
-                        } else {
+                        }
+                        else {
                             break;
                         }
-                    } catch { }
+                    }
+                    catch { }
                 }
 
                 if (p == who) {
                     Player.SendMessage(p, "Undid your actions for the past &b" + seconds + Server.DefaultColor + " seconds.");
-                } else {
+                }
+                else {
                     Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + "'s actions for the past &b" + seconds + " seconds were undone.", false);
                     // Also notify console
                     Server.s.Log(who.name + "'s actions for the past " + seconds + " seconds were undone.");
                 }
                 return;
-            } else if (undoPhysics) {
-                if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "Reserved for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
-                if (!p.group.CanExecute(Command.all.Find("physics"))) { Player.SendMessage(p, "You can only undo physics if you can use them."); return; }
+            }
+            else if (undoPhysics) {
+                if (p != null && (int)p.@group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "Reserved for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
+                if (p != null && !p.@group.CanExecute(Command.all.Find("physics"))) { Player.SendMessage(p, "You can only undo physics if you can use them."); return; }
 
                 Command.all.Find("physics").Use(p, "0");
                 Level.UndoPos uP;
@@ -115,40 +119,42 @@ namespace MCForge.Commands
                         try {
                             uP = p.level.UndoBuffer[CurrentPos];
                             b = p.level.GetTile(uP.location);
-                            if (uP.timePerformed.AddSeconds(seconds) >= DateTime.Now) {
-                                if (b == uP.newType || Block.Convert(b) == Block.water || Block.Convert(b) == Block.lava) {
-                                    p.level.IntToPos(uP.location, out x, out y, out z);
-                                    p.level.Blockchange(p, x, y, z, uP.oldType, true);
-                                }
-                            } else {
+                            if (uP.timePerformed.AddSeconds(seconds) < DateTime.Now) {
                                 break;
                             }
-                        } catch { }
+                            if (b == uP.newType || Block.Convert(b) == Block.water || Block.Convert(b) == Block.lava) {
+                                p.level.IntToPos(uP.location, out x, out y, out z);
+                                p.level.Blockchange(p, x, y, z, uP.oldType);
+                            }
+                        }
+                        catch { }
                     }
-                } else {
+                }
+                else {
                     for (CurrentPos = p.level.currentUndo; CurrentPos != p.level.currentUndo + 1; CurrentPos--) {
                         try {
                             if (CurrentPos < 0) CurrentPos = p.level.UndoBuffer.Count - 1;
                             uP = p.level.UndoBuffer[CurrentPos];
                             b = p.level.GetTile(uP.location);
-                            if (uP.timePerformed.AddSeconds(seconds) >= DateTime.Now) {
-                                if (b == uP.newType || Block.Convert(b) == Block.water || Block.Convert(b) == Block.lava) {
-                                    p.level.IntToPos(uP.location, out x, out y, out z);
-                                    p.level.Blockchange(p, x, y, z, uP.oldType, true);
-                                }
-                            } else {
+                            if (uP.timePerformed.AddSeconds(seconds) < DateTime.Now) {
                                 break;
                             }
-                        } catch { }
+                            if (b == uP.newType || Block.Convert(b) == Block.water || Block.Convert(b) == Block.lava) {
+                                p.level.IntToPos(uP.location, out x, out y, out z);
+                                p.level.Blockchange(p, x, y, z, uP.oldType, true);
+                            }
+                        }
+                        catch { }
                     }
                 }
 
                 Player.GlobalMessage("Physics were undone &b" + seconds + Server.DefaultColor + " seconds");
                 // Also notify console
                 Player.SendMessage(null, "Physics were undone &b" + seconds + Server.DefaultColor + " seconds");
-            } else { // Here, who == null, meaning the user specified is offline
+            }
+            else { // Here, who == null, meaning the user specified is offline
                 if (p != null) {
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "Reserved for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
+                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this)) { Player.SendMessage(p, "Reserved for " + Group.findPermInt(CommandOtherPerms.GetPerm(this)).name + "+"); return; }
                     // ^^^ is using the same as the 1st other permission for the this command because the only difference is that this is for offline players so it might aswell be the same!!
                 }
 
@@ -171,8 +177,7 @@ namespace MCForge.Commands
                         FoundUser = true;
                     }
 
-                    if (Directory.Exists("extra/undoPrevious/" + whoName.ToLower()))
-                    {
+                    if (Directory.Exists("extra/undoPrevious/" + whoName.ToLower())) {
                         di = new DirectoryInfo("extra/undoPrevious/" + whoName.ToLower());
 
                         for (int i = di.GetFiles("*.undo").Length - 1; i >= 0; i--) {
@@ -186,8 +191,10 @@ namespace MCForge.Commands
                         Player.GlobalMessage(Server.FindColor(whoName) + whoName + Server.DefaultColor + "'s actions for the past &b" + seconds + Server.DefaultColor + " seconds were undone.");
                         // Also notify console
                         Server.s.Log(whoName + "'s actions for the past " + seconds + " seconds were undone.");
-                    } else Player.SendMessage(p, "Could not find player specified.");
-                } catch (Exception e) {
+                    }
+                    else Player.SendMessage(p, "Could not find player specified.");
+                }
+                catch (Exception e) {
                     Server.ErrorLog(e);
                 }
             }
@@ -212,7 +219,7 @@ namespace MCForge.Commands
              */
             long secs;
             if (param == "all" && p.group.CanExecute(Command.all.Find("xundo")))
-                secs = (p == null || p.group.maxUndo == MAX) ? int.MaxValue : p.group.maxUndo;
+                secs = (p.@group.maxUndo == MAX) ? int.MaxValue : p.group.maxUndo;
             else
                 secs = long.Parse(param); //caught by try/catch in outer method
 
@@ -225,7 +232,7 @@ namespace MCForge.Commands
             return secs;
         }
 
-        public bool undoBlah(string[] fileContent, Int64 seconds, Player p) {
+        public bool undoBlah(string[] fileContent, long seconds, Player p) {
 
             //fileContents += uP.map.name + " " + uP.x + " " + uP.y + " " + uP.z + " ";
             //fileContents += uP.timePlaced + " " + uP.type + " " + uP.newtype + " ";
@@ -238,26 +245,31 @@ namespace MCForge.Commands
 
             for (int i = fileContent.Length / 7; i >= 0; i--) {
                 try {
-                    if (Convert.ToDateTime(fileContent[(i * 7) + 4].Replace('&', ' ')).AddSeconds(seconds) >= DateTime.Now) {
-                        Level foundLevel = Level.FindExact(fileContent[i * 7]);
-                        if (foundLevel != null) {
-                            Pos.mapName = foundLevel.name;
-                            Pos.x = Convert.ToUInt16(fileContent[(i * 7) + 1]);
-                            Pos.y = Convert.ToUInt16(fileContent[(i * 7) + 2]);
-                            Pos.z = Convert.ToUInt16(fileContent[(i * 7) + 3]);
+                    if (Convert.ToDateTime(fileContent[(i*7) + 4].Replace('&', ' ')).AddSeconds(seconds) < DateTime.Now)
+                        return false;
 
-                            Pos.type = foundLevel.GetTile(Pos.x, Pos.y, Pos.z);
+                    Level foundLevel = Level.FindExact(fileContent[i*7]);
+                    if (foundLevel != null){
+                        Pos.mapName = foundLevel.name;
+                        Pos.x = Convert.ToUInt16(fileContent[(i*7) + 1]);
+                        Pos.y = Convert.ToUInt16(fileContent[(i*7) + 2]);
+                        Pos.z = Convert.ToUInt16(fileContent[(i*7) + 3]);
 
-                            if (Pos.type == Convert.ToByte(fileContent[(i * 7) + 6]) || Block.Convert(Pos.type) == Block.water || Block.Convert(Pos.type) == Block.lava || Pos.type == Block.grass) {
-                                Pos.newtype = Convert.ToByte(fileContent[(i * 7) + 5]);
-                                Pos.timePlaced = DateTime.Now;
+                        Pos.type = foundLevel.GetTile(Pos.x, Pos.y, Pos.z);
 
-                                foundLevel.Blockchange(Pos.x, Pos.y, Pos.z, Pos.newtype, true);
-                                if (p != null) p.RedoBuffer.Add(Pos);
-                            }
+                        if (Pos.type == Convert.ToByte(fileContent[(i*7) + 6]) ||
+                            Block.Convert(Pos.type) == Block.water || Block.Convert(Pos.type) == Block.lava ||
+                            Pos.type == Block.grass){
+                            Pos.newtype = Convert.ToByte(fileContent[(i*7) + 5]);
+                            Pos.timePlaced = DateTime.Now;
+
+                            foundLevel.Blockchange(Pos.x, Pos.y, Pos.z, Pos.newtype, true);
+                            if (p != null)
+                                p.RedoBuffer.Add(Pos);
                         }
-                    } else return false;
-                } catch { }
+                    }
+                }
+                catch { }
             }
 
             return true;

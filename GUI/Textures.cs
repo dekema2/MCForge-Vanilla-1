@@ -79,12 +79,8 @@ namespace MCForge.GUI
             MessageBox.Show("When using custom, please put in the texture file ID that will download from files.worldofminecraft.net. EX: f3dac271d7bce9954baad46e183a6a910a30d13b", "Help");
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBox1.Items[comboBox1.SelectedIndex].ToString().Split(' ')[0].ToLower() == "custom")
-                custom.Enabled = true;
-            else
-                custom.Enabled = false;
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e){
+            custom.Enabled = comboBox1.Items[comboBox1.SelectedIndex].ToString().Split(' ')[0].ToLower() == "custom";
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -97,12 +93,8 @@ namespace MCForge.GUI
             MessageBox.Show("Here you input the terrian texture file ID that you uploaded to files.worldofminecraft.net. By default, it will use the default textures.", "Help");
         }
 
-        private void side_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (side.Items[side.SelectedIndex].ToString().Split(' ')[0].ToLower() == "custom")
-                custom_side.Enabled = true;
-            else
-                custom_side.Enabled = false;
+        private void side_SelectedIndexChanged(object sender, EventArgs e){
+            custom_side.Enabled = side.Items[side.SelectedIndex].ToString().Split(' ')[0].ToLower() == "custom";
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -172,21 +164,17 @@ namespace MCForge.GUI
                         break;
                 }
             }
-            Group.GroupList.ForEach(delegate(Group g)
-            {
-                comboBox2.Items.Add(g.name);
-            });
+            Group.GroupList.ForEach(g => comboBox2.Items.Add(g.name));
             comboBox2.SelectedIndex = comboBox2.Items.IndexOf(l.textures.LowestRank.name);
             checkBox1.Checked = l.textures.enabled;
             checkBox1.Checked = l.textures.autou;
         }
         private void sky_TextChanged(object sender, EventArgs e)
         {
-            if (sky.Text[0] != '#')
-            {
-                sky.Text = "#" + sky.Text;
-                sky.Select(sky.Text.Length, 1);
-            }
+            if (sky.Text[0] == '#')
+                return;
+            sky.Text = "#" + sky.Text;
+            sky.Select(sky.Text.Length, 1);
         }
 
         private void fog_TextChanged(object sender, EventArgs e)
@@ -208,22 +196,20 @@ namespace MCForge.GUI
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (l == Server.mainLevel)
-            {
-                MessageBox.Show("Rank Level must be the lowest for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                comboBox2.SelectedIndex = comboBox2.Items.IndexOf(Group.standard.name);
+            if (l != Server.mainLevel)
                 return;
-            }
+            MessageBox.Show("Rank Level must be the lowest for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            comboBox2.SelectedIndex = comboBox2.Items.IndexOf(Group.standard.name);
+          
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (l == Server.mainLevel)
-            {
-                MessageBox.Show("Textures must be enabled for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                checkBox1.Checked = true;
+            if (l != Server.mainLevel)
                 return;
-            }
+            MessageBox.Show("Textures must be enabled for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            checkBox1.Checked = true;
+         
         }
     }
 }

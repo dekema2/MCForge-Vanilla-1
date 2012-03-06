@@ -17,6 +17,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MCForge
 {
@@ -31,12 +32,9 @@ namespace MCForge
         }
         public List<string> commandNames()
         {
-            List<string> tempList = new List<string>();
+            var tempList = new List<string>();
 
-            commands.ForEach(delegate(Command cmd)
-            {
-                tempList.Add(cmd.name);
-            });
+            commands.ForEach(cmd => tempList.Add(cmd.name));
 
             return tempList;
         }
@@ -45,17 +43,13 @@ namespace MCForge
         public bool Contains(Command cmd) { return commands.Contains(cmd); }
         public bool Contains(string name)
         {
-            name = name.ToLower(); foreach (Command cmd in commands)
-            {
-                if (cmd.name == name.ToLower()) { return true; }
-            } return false;
+            name = name.ToLower();
+            return commands.Any(cmd => cmd.name == name.ToLower());
         }
         public Command Find(string name)
         {
-            name = name.ToLower(); foreach (Command cmd in commands)
-            {
-                if (cmd.name == name || cmd.shortcut == name) { return cmd; }
-            } return null;
+            name = name.ToLower();
+            return commands.FirstOrDefault(cmd => cmd.name == name || cmd.shortcut == name);
         }
 
         public string FindShort(string shortcut)
@@ -63,9 +57,8 @@ namespace MCForge
             if (shortcut == "") return "";
 
             shortcut = shortcut.ToLower();
-            foreach (Command cmd in commands)
-            {
-                if (cmd.shortcut == shortcut) return cmd.name;
+            foreach (Command cmd in commands.Where(cmd => cmd.shortcut == shortcut)){
+                return cmd.name;
             }
             return "";
         }
