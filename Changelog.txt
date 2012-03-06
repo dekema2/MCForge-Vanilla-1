@@ -1,3 +1,10 @@
+v5.5.0.2
+-Fixed Console crashing when trying to set up WoM Textures
+-Fixed the color code crashes (for good)
+-Reverted to old networking code
+-Fixed GUI bugs
+-Released Forge Remote for Android and PC : http://www.mcforge.net/remote/
+
 v5.5.0.1
 -Fixed Players not disconnecting under mono.
 -Fixed /Jail not working if not used by console.

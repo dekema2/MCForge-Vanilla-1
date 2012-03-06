@@ -1755,23 +1755,21 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     SendMessage("Message appended!");
                     return;
                 }
-                else if (text.EndsWith("<")) {
+                if (text.EndsWith("<")) {
                     storedMessage += text.Replace("<", "|<|");
                     SendMessage("Message appended!");
                     return;
                 }
-                else if (text.Contains("%/"))//This causes all players to crash!
+                if (Regex.IsMatch(text, "%[^a-fA-F0-9]"))//This causes all players to crash!
                 {
-                    Player.SendMessage(this, "You're not allowed to send that message!");
+                    SendMessage(this, "You're not allowed to send that message!");
                     return;
                 }
 
                 text = Regex.Replace(text, @"\s\s+", " ");
-                foreach (char ch in text) {
-                    if (ch < 32 || ch >= 127 || ch == '&') {
-                        Kick("Illegal character in chat message!");
-                        return;
-                    }
+                if (text.Any(ch => ch < 32 || ch >= 127 || ch == '&')){
+                    Kick("Illegal character in chat message!");
+                    return;
                 }
                 if (text.Length == 0)
                     return;

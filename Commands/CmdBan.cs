@@ -18,10 +18,8 @@
 using System;
 
 
-namespace MCForge.Commands
-{
-    public class CmdBan : Command
-    {
+namespace MCForge.Commands {
+    public class CmdBan : Command {
         public override string name { get { return "ban"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }
@@ -29,45 +27,29 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public CmdBan() { }
 
-        public override void Use(Player p, string message)
-        {
-            try
-            {
+        public override void Use(Player p, string message) {
+            try {
                 if (message == "") { Help(p); return; }
                 bool stealth = false; bool totalBan = false;
-                if (message[0] == '#')
-                {
-                    if (p == null)
-                    {
-                        message = message.Remove(0, 1).Trim();
-                        stealth = true;
-                        Server.s.Log("Stealth Ban Attempted by Console");
-                    }
-                    else
-                    {
-                        message = message.Remove(0, 1).Trim();
-                        stealth = true;
-                        Server.s.Log("Stealth Ban Attempted by " + p.name);
-                    }
+                if (message[0] == '#') {
+                    message = message.Remove(0, 1).Trim();
+                    stealth = true;
+                    Server.s.Log("Stealth Ban Attempted by " + p == null ? "Console" : p.name);
                 }
-                else if (message[0] == '@')
-                {
-                    if (p == null)
-                    {
+                else if (message[0] == '@') {
+                    if (p == null) {
                         message = message.Remove(0, 1).Trim();
                         stealth = true;
                         Server.s.Log("Total Ban Attempted by Console");
                     }
-                    else
-                    {
+                    else {
                         totalBan = true;
                         message = message.Remove(0, 1).Trim();
                         Server.s.Log("Total Ban Attempted by " + p.name);
                     }
                 }
                 string reason = "-";
-                if (message.Split(' ').Length > 1)
-                {
+                if (message.Split(' ').Length > 1) {
                     reason = message;
                     string newreason = reason.Remove(0, reason.Split(' ')[0].Length + 1);
                     int removetrim = newreason.Length + 1;
@@ -75,109 +57,87 @@ namespace MCForge.Commands
                     reason = newreason;
                     message = newmessage;
                 }
-                if (reason == "-")
-                {
+                if (reason == "-") {
                     reason = "&c-";
                 }
                 reason = reason.Replace(" ", "%20");
                 Player who = Player.Find(message);
 
-                if (who == null)
-                {
-                    if (!Player.ValidName(message))
-                    {
+                if (who == null) {
+                    if (!Player.ValidName(message)) {
                         Player.SendMessage(p, "Invalid name \"" + message + "\".");
                         return;
                     }
-                    if (Server.devs.Contains(message.ToLower()))
-                    {
+                    if (Server.devs.Contains(message.ToLower())) {
                         Player.SendMessage(p, "You can't ban a MCForge Developer!");
-                        if (p != null)
-                        {
+                        if (p != null) {
                             Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");
                         }
-                        else
-                        {
+                        else {
                             Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban a MCForge Developer!");
                         }
                         return;
                     }
                     Group foundGroup = Group.findPlayerGroup(message);
 
-                    if ((int)foundGroup.Permission >= CommandOtherPerms.GetPerm(this))
-                    {
+                    if ((int)foundGroup.Permission >= CommandOtherPerms.GetPerm(this)) {
                         Player.SendMessage(p, "You can't ban a " + foundGroup.name + "!");
                         return;
                     }
-                    if (foundGroup.Permission == LevelPermission.Banned)
-                    {
+                    if (foundGroup.Permission == LevelPermission.Banned) {
                         Player.SendMessage(p, message + " is already banned.");
                         return;
                     }
-                    if (p != null && foundGroup.Permission >= p.group.Permission)
-                    {
+                    if (p != null && foundGroup.Permission >= p.group.Permission) {
                         Player.SendMessage(p, "You cannot ban a person ranked equal or higher than you.");
                         return;
                     }
                     string oldgroup = foundGroup.name.ToString();
                     foundGroup.playerList.Remove(message);
                     foundGroup.playerList.Save();
-                    if (p != null)
-                    {
+                    if (p != null) {
                         Player.GlobalMessage(message + " &f(offline)" + Server.DefaultColor + " was &8banned" + Server.DefaultColor + " by " + p.color + p.name + Server.DefaultColor + ".");
                     }
-                    else
-                    {
+                    else {
                         Player.GlobalMessage(message + " &f(offline)" + Server.DefaultColor + " was &8banned" + Server.DefaultColor + " by console.");
                     }
                     Group.findPerm(LevelPermission.Banned).playerList.Add(message);
                     Ban.Banplayer(p, message, reason, stealth, oldgroup);
                 }
-                else
-                {
-                    if (!Player.ValidName(who.name))
-                    {
+                else {
+                    if (!Player.ValidName(who.name)) {
                         Player.SendMessage(p, "Invalid name \"" + who.name + "\".");
                         return;
                     }
-                    if (Server.devs.Contains(who.name.ToLower()))
-                    {
+                    if (Server.devs.Contains(who.name.ToLower())) {
                         Player.SendMessage(p, "You can't ban an MCForge Developer!");
-                        if (p != null)
-                        {
+                        if (p != null) {
                             Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban an MCForge Developer!");
                         }
-                        else
-                        {
+                        else {
                             Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban an MCForge Developer!");
                         }
                         return;
                     }
-                    if (Server.gcmodhasprotection(who.name.ToLower()))
-                    {
+                    if (Server.gcmodhasprotection(who.name.ToLower())) {
                         Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
-                        if (p != null)
-                        {
+                        if (p != null) {
                             Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a Global Chat Moderator!");
                         }
-                        else
-                        {
+                        else {
                             Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban a Global Chat Moderator!");
                         }
                         return;
                     }
-                    if ((int)who.group.Permission >= CommandOtherPerms.GetPerm(this))
-                    {
+                    if ((int)who.group.Permission >= CommandOtherPerms.GetPerm(this)) {
                         Player.SendMessage(p, "You can't ban a " + who.group.name + "!");
                         return;
                     }
-                    if (who.group.Permission == LevelPermission.Banned)
-                    {
+                    if (who.group.Permission == LevelPermission.Banned) {
                         Player.SendMessage(p, message + " is already banned.");
                         return;
                     }
-                    if (p != null && who.group.Permission >= p.group.Permission)
-                    {
+                    if (p != null && who.group.Permission >= p.group.Permission) {
                         Player.SendMessage(p, "You cannot ban a person ranked equal or higher than you.");
                         return;
                     }
@@ -185,13 +145,11 @@ namespace MCForge.Commands
                     who.group.playerList.Remove(message);
                     who.group.playerList.Save();
 
-                    if (p != null)
-                    {
+                    if (p != null) {
                         if (stealth) Player.GlobalMessageOps(who.color + who.name + Server.DefaultColor + " was STEALTH &8banned" + Server.DefaultColor + " by " + p.color + p.name + Server.DefaultColor + "!");
                         else Player.GlobalMessage(who.color + who.name + Server.DefaultColor + " was &8banned" + Server.DefaultColor + " by " + p.color + p.name + Server.DefaultColor + "!");
                     }
-                    else
-                    {
+                    else {
                         if (stealth) Player.GlobalMessageOps(who.color + who.name + Server.DefaultColor + " was STEALTH &8banned" + Server.DefaultColor + " by console.");
                         else Player.GlobalMessage(who.color + who.name + Server.DefaultColor + " was &8banned" + Server.DefaultColor + " by console.");
                     }
@@ -204,27 +162,23 @@ namespace MCForge.Commands
                 }
                 Group.findPerm(LevelPermission.Banned).playerList.Save();
 
-                if (p != null)
-                {
+                if (p != null) {
                     Server.IRC.Say(message + " was banned by " + p.name + ".");
                     Server.s.Log("BANNED: " + message.ToLower() + " by " + p.name);
                 }
-                else
-                {
+                else {
                     Server.IRC.Say(message + " was banned by console.");
                     Server.s.Log("BANNED: " + message.ToLower() + " by console.");
                 }
 
-                if (totalBan == true)
-                {
+                if (totalBan == true) {
                     Command.all.Find("undo").Use(p, message + " 0");
                     Command.all.Find("banip").Use(p, "@ " + message);
                 }
             }
             catch (Exception e) { Server.ErrorLog(e); }
         }
-        public override void Help(Player p)
-        {
+        public override void Help(Player p) {
             Player.SendMessage(p, "/ban <player> [reason] - Bans a player without kicking him.");
             Player.SendMessage(p, "Add # before name to stealth ban.");
             Player.SendMessage(p, "Add @ before name to total ban.");

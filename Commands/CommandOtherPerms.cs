@@ -73,16 +73,8 @@ namespace MCForge
             return otpe.Permission;
         }
 
-        public static OtherPerms Find(Command cmd, int number = 1)
-        {
-            foreach (OtherPerms OtPe in list)
-            {
-                if (OtPe.cmd == cmd && OtPe.number == number)
-                {
-                    return OtPe;
-                }
-            }
-            return null;
+        public static OtherPerms Find(Command cmd, int number = 1){
+            return list.FirstOrDefault(OtPe => OtPe.cmd == cmd && OtPe.number == number);
         }
 
         public static void Add(Command command, int Perm, string desc, int number = 1)

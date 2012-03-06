@@ -102,12 +102,12 @@ namespace MCForge.Commands
 
             if (!bp.Multi)
             {
-                p.Blockchange += new Player.BlockchangeEventHandler(ExitChange);
+                p.Blockchange += ExitChange;
                 Player.SendMessage(p, "&aEntry block placed");
             }
             else
             {
-                p.Blockchange += new Player.BlockchangeEventHandler(EntryChange);
+                p.Blockchange += EntryChange;
                 Player.SendMessage(p, "&aEntry block placed. &cRed block for exit");
             }
         }
@@ -138,7 +138,9 @@ namespace MCForge.Commands
 
             Player.SendMessage(p, "&3Exit" + Server.DefaultColor + " block placed");
 
-            if (p.staticCommands) { bp.port.Clear(); p.blockchangeObject = bp; p.Blockchange += new Player.BlockchangeEventHandler(EntryChange); }
+            if (!p.staticCommands)
+                return;
+            bp.port.Clear(); p.blockchangeObject = bp; p.Blockchange += EntryChange;
         }
 
         public struct portalPos { public List<portPos> port; public byte type; public bool Multi; }

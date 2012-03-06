@@ -47,7 +47,7 @@ namespace MCForge.Commands
                 Player.SendMessage(p, "&cPlayer &e" + message + " &cHas not been found!");
                 return;
             }
-            if (alltext.Contains(message) == false)
+            if (!alltext.Contains(message))
             {
                 Player.SendMessage(p, "&cPlayer &a" + message + "&c has not been ranked yet!");
                 return;
@@ -57,25 +57,24 @@ namespace MCForge.Commands
 
             foreach (string line3 in File.ReadAllLines("text/rankinfo.txt"))
             {
-                if (line3.Contains(message))
-                {
-                    string newrank = line3.Split(' ')[7];
-                    string oldrank = line3.Split(' ')[8];
-                    string assigner = line3.Split(' ')[1];
-                    Group newrankcolor = Group.Find(newrank);
-                    Group oldrankcolor = Group.Find(oldrank);
-                    int minutes = Convert.ToInt32(line3.Split(' ')[2]);
-                    int hours = Convert.ToInt32(line3.Split(' ')[3]);
-                    int days = Convert.ToInt32(line3.Split(' ')[4]);
-                    int months = Convert.ToInt32(line3.Split(' ')[5]);
-                    int years = Convert.ToInt32(line3.Split(' ')[6]);
-                    DateTime ExpireDate = new DateTime(years, months, days, hours, minutes, 0);
-                    Player.SendMessage(p, "&1Rank Information of " + message);
-                    Player.SendMessage(p, "&aNew rank: " + newrankcolor.color + newrank);
-                    Player.SendMessage(p, "&aOld Rank: " + oldrankcolor.color + oldrank);
-                    Player.SendMessage(p, "&aDate of assignment: " + ExpireDate.ToString());
-                    Player.SendMessage(p, "&aRanked by: " + assigner);
-                }
+                if (!line3.Contains(message))
+                    continue;
+                string newrank = line3.Split(' ')[7];
+                string oldrank = line3.Split(' ')[8];
+                string assigner = line3.Split(' ')[1];
+                Group newrankcolor = Group.Find(newrank);
+                Group oldrankcolor = Group.Find(oldrank);
+                int minutes = Convert.ToInt32(line3.Split(' ')[2]);
+                int hours = Convert.ToInt32(line3.Split(' ')[3]);
+                int days = Convert.ToInt32(line3.Split(' ')[4]);
+                int months = Convert.ToInt32(line3.Split(' ')[5]);
+                int years = Convert.ToInt32(line3.Split(' ')[6]);
+                var ExpireDate = new DateTime(years, months, days, hours, minutes, 0);
+                Player.SendMessage(p, "&1Rank Information of " + message);
+                Player.SendMessage(p, "&aNew rank: " + newrankcolor.color + newrank);
+                Player.SendMessage(p, "&aOld Rank: " + oldrankcolor.color + oldrank);
+                Player.SendMessage(p, "&aDate of assignment: " + ExpireDate.ToString());
+                Player.SendMessage(p, "&aRanked by: " + assigner);
             }
 
 
