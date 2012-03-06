@@ -14,7 +14,7 @@ namespace MCForge.Levels.Textures
         #region ==VARS==
         string cachecfg = "";
         public Group LowestRank { get { return lowest; } }
-        Group lowest;
+        Group lowest = Group.Find(Server.defaultRank);
         bool update = false;
         public bool autou = true;
         public bool enabled = false;
