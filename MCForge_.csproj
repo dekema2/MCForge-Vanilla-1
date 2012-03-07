@@ -647,6 +647,7 @@
     <None Include="app.config" />
     <Compile Include="Commands\CmdVoteKick.cs" />
     <Compile Include="Plugins\Manager\Plugin.Events.cs" />
+    <None Include="bin\Release\Updater.exe" />
     <Content Include="mcf.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

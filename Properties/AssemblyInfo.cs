@@ -16,7 +16,6 @@
 	permissions and limitations under the Licenses.
 */
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -38,7 +37,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("24d9085c-78ba-4f53-b69c-f2b52153683f")]
 
-[assembly: AssemblyVersion("5.5.0.2")]
+[assembly: AssemblyVersion("5.5.0.3")]
 
 // Version information for an assembly consists of the following four values:
 //
