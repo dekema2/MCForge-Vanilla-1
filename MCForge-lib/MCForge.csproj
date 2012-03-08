@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibMinecraft.Classic">
-      <HintPath>..\..\libmc\LibMinecraft.Classic\bin\Debug\LibMinecraft.Classic.dll</HintPath>
+      <HintPath>..\dlls\LibMinecraft.Classic.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\dlls\MySql.Data.dll</HintPath>
