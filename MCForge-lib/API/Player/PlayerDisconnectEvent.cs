@@ -3,13 +3,13 @@ using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public class PlayerConnectEvent : Event
+    public class PlayerDisconnectEvent : Event
     {
         RemoteClient player;
         public RemoteClient Player { get { return player; } }
-        internal PlayerConnectEvent(RemoteClient player) { this.player = player; }
-        internal PlayerConnectEvent() { }
-        internal override string name { get { return "playerconnect"; } }
+        internal PlayerDisconnectEvent(RemoteClient player) { this.player = player; }
+        internal PlayerDisconnectEvent() { }
+        internal override string name { get { return "playerdisconnect"; } }
         public void Call()
         {
             base.Call(this);
@@ -27,8 +27,8 @@ namespace MCForge.API.Player
         {
             Cache r = new Cache();
             System.Reflection.ParameterInfo p = method.Method.GetParameters()[0];
-            if (p.GetType() == typeof(PlayerConnectEvent))
-                r.e = new PlayerConnectEvent();
+            if (p.GetType() == typeof(PlayerDisconnectEvent))
+                r.e = new PlayerDisconnectEvent();
             else
                 throw new Exception("Invalid method");
             r.method = method;

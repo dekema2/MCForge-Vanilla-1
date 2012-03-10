@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using LibMinecraft.Classic.Server;
+using MCForge.API.Player;
+using LibMinecraft.Classic.Server;
+using LibMinecraft.Classic.Model;
 
 
 namespace MCForge.API
@@ -13,6 +17,10 @@ namespace MCForge.API
     }
     public abstract class Event
     {
+        /// <summary>
+        /// The name of the event
+        /// </summary>
+        internal abstract string name { get; }
         internal static List<Cache> cache = new List<Cache>();
         bool _canceled;
         /// <summary>
@@ -50,9 +58,23 @@ namespace MCForge.API
         {
             cache.ForEach(r =>
             {
-                if (r.e.GetType() == e.GetType())
+                if (r.e.name == e.name)
                     r.method(e);
             });
+        }
+        internal static void INIT()
+        {
+            MCForgeServer.ClassicServer.OnPlayerConnectionChanged += new System.EventHandler<PlayerConnectionEventArgs>(ClassicServer_OnPlayerConnectionChanged);
+        }
+
+        static void ClassicServer_OnPlayerConnectionChanged(object sender, PlayerConnectionEventArgs e)
+        {
+            Event args = null;
+            if (e.ConnectionState == LibMinecraft.Classic.Server.ConnectionState.Connected)
+                args = new PlayerConnectEvent(e.Client);
+            if (e.ConnectionState == LibMinecraft.Classic.Server.ConnectionState.Disconnected)
+                args = new PlayerDisconnectEvent(e.Client);
+            args.Call(args);
         }
         //UNTESTED CODE
         //I need to test this..but I dont have anything to test it on so I'll leave it here for now

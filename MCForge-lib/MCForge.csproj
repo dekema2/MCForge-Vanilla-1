@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibMinecraft.Classic">
-      <HintPath>..\dlls\LibMinecraft.Classic.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\dlls\MySql.Data.dll</HintPath>
     </Reference>
@@ -51,6 +48,7 @@
   <ItemGroup>
     <Compile Include="API\Event.cs" />
     <Compile Include="API\Player\PlayerConnectEvent.cs" />
+    <Compile Include="API\Player\PlayerDisconnectEvent.cs" />
     <Compile Include="API\Priority.cs" />
     <Compile Include="Blocks\Block.cs" />
     <Compile Include="Blocks\BlockAir.cs" />
@@ -65,7 +63,12 @@
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\Settings.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LibMinecraft.Classic\LibMinecraft.Classic.csproj">
+      <Project>{86BFDA3F-31C9-46D6-9EB2-843B397DD6B8}</Project>
+      <Name>LibMinecraft.Classic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Plugins\readme.txt" />
   </ItemGroup>
