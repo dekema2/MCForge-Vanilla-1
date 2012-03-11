@@ -76,6 +76,10 @@ namespace LibMinecraft.Classic.Server
         /// The world directory.
         /// </summary>
         public string WorldDirectory;
+        /// <summary>
+        /// Cancel prepacket event
+        /// </summary>
+        public bool cancelprepacket = false;
 
         #region Constants
 
@@ -99,6 +103,7 @@ namespace LibMinecraft.Classic.Server
         /// </summary>
         /// <remarks></remarks>
         public event EventHandler<PlayerConnectionEventArgs> OnPlayerConnectionChanged;
+        public event EventHandler<PrePacketEventArgs> PrePacketEvent;
 
         #endregion
 
@@ -241,11 +246,19 @@ namespace LibMinecraft.Classic.Server
                         if (Clients[i].TcpClient.Available != 0)
                         {
                             Packet p = Packet.GetPacket((PacketID)Clients[i].TcpClient.GetStream().ReadByte(), true);
+                            if (PrePacketEvent != null)
+                                PrePacketEvent(this, new PrePacketEventArgs(p, Clients[i]));
+                            if (cancelprepacket)
+                            {
+                                cancelprepacket = false;
+                                goto here;
+                            }
                             p.ReadPacket(Clients[i]);
                             p.HandlePacket(this, Clients[i]);
                             if (p.PacketID == PacketID.Identification && OnPlayerConnectionChanged != null)
                                 OnPlayerConnectionChanged(this, new PlayerConnectionEventArgs(ConnectionState.Connected, Clients[i]));
                         }
+                        here:
                         // Write out from the packet queue
                         if (Clients[i].PacketQueue.Count == 0)
                             continue;

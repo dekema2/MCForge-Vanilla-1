@@ -8,6 +8,8 @@ using MCForge.Interface;
 using MCForge.Utilities;
 using LibMinecraft.Classic.Model.Packets;
 using MCForge.Utilities.Settings;
+using MCForge.API.Player;
+using MCForge.API;
 
 namespace MCForge {
     public class MCForgeServer {
@@ -56,7 +58,8 @@ namespace MCForge {
             McServer.Private = !ServerSettings.GetSettingBoolean("Public");
 
             Logger.Log(ClassicServer.Start(McServer));
-
+            Console.WriteLine("Testing event system..");
+            System.IO.File.WriteAllLines("url.txt", new[] { ClassicServer.ServerUrl });
             if (ServerSettings.GetSettingBoolean("UsingConsole")) {
                 Logger.OnRecieveLog -= OnLog;
                 MCForgeConsole.Start();
@@ -66,7 +69,6 @@ namespace MCForge {
             }
 
         }
-
         /// <summary>
         /// Stops MCForge
         /// </summary>

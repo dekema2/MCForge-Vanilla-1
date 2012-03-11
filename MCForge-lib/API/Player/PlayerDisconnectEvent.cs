@@ -26,11 +26,7 @@ namespace MCForge.API.Player
         public static void Register(OnCall method, Priority priority)
         {
             Cache r = new Cache();
-            System.Reflection.ParameterInfo p = method.Method.GetParameters()[0];
-            if (p.GetType() == typeof(PlayerDisconnectEvent))
-                r.e = new PlayerDisconnectEvent();
-            else
-                throw new Exception("Invalid method");
+            r.e = new PlayerDisconnectEvent();
             r.method = method;
             r.priority = priority;
             r.Push();

@@ -47,15 +47,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Event.cs" />
+    <Content Include="API\Example.txt" />
+    <Compile Include="API\Player\PlayerChatEvent.cs" />
     <Compile Include="API\Player\PlayerConnectEvent.cs" />
     <Compile Include="API\Player\PlayerDisconnectEvent.cs" />
     <Compile Include="API\Priority.cs" />
     <Compile Include="Database\DatabaseHelper.cs" />
     <Compile Include="Database\Databasing.cs" />
     <Compile Include="Database\MySQLHelper.cs" />
-    <Compile Include="Events\LogEventArgs.cs" />
     <Compile Include="Interface\MCForgeConsole.cs" />
     <Compile Include="MCForge.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Content Include="API\TODO.txt" />
+    <Content Include="Plugins\Example.txt" />
+    <Compile Include="Plugins\Manager.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\FileUtils.cs" />
     <Compile Include="Utilities\Logger.cs" />
