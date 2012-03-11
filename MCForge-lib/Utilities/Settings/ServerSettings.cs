@@ -65,7 +65,6 @@ namespace MCForge.Utilities.Settings {
         /// </summary>
         /// <param name="key">The key</param>
         /// <returns>The setting values, use [0] at end if it only has 1 value</returns>
-        /// <remarks>each value is seperated by a comma</remarks>
         public static string[] GetSettingArray(string key) {
             var pair = GetPair(key);
             return pair == null ? new[] { "" } : GetPair(key).Value.Split(','); //We don't want to return a null object
@@ -76,8 +75,8 @@ namespace MCForge.Utilities.Settings {
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting values, use [0] at end if it only has 1 value</returns>
-        /// <remarks>each value is seperated by a comma</remarks>
+        /// <returns>The setting value</returns>
+        /// <remarks>Returns the first value if multiple values are present</remarks>
         public static string GetSetting(string key) {
             return GetSettingArray(key)[0];
         }
@@ -86,21 +85,27 @@ namespace MCForge.Utilities.Settings {
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting value specified by the key, or -1 if the setting is not found</returns>
+        /// <returns>The setting value specified by the key, or -1 if the setting is not found or could not be parsed</returns>
         public static int GetSettingInt(string key) {
             int i;
             var pair = GetPair(key);
             if (pair == null)
                 return -1;
-            int.TryParse(GetPair(key).Value, out i);
-            return i;
+            try {
+                int.TryParse(GetPair(key).Value, out i);
+                return i;
+            }
+            catch {
+                Logger.Log("ServerSettings: integer expected as first value for '" + key + "'", LogType.Error);
+                return -1;
+            }
         }
 
         /// <summary>
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting value specified by the key</returns>
+        /// <returns>The setting value specified by the key, or false if the setting is not found</returns>
         public static bool GetSettingBoolean(string key) {
             return GetSetting(key).ToLower() == "true";
         }
@@ -132,7 +137,7 @@ namespace MCForge.Utilities.Settings {
         /// Set the setting
         /// </summary>
         /// <param name="key">key to save value to</param>
-        /// <param name="value">value to set setting to</param>
+        /// <param name="value">value (or multiple values sperated by a comma ',') to set setting to</param>
         /// <param name="description">Write a description (optional)</param>
         /// <remarks>If the setting does not exist, it will create a new one</remarks>
         public static void SetSetting(string key, int value, string description = null) {
