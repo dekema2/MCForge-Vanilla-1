@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using LibMinecraft.Classic.Server;
 using LibMinecraft.Classic.Model;
+using MCForge.Interface;
 using MCForge.Utilities;
 using LibMinecraft.Classic.Model.Packets;
-using MCForge.Events;
+using MCForge.Utilities.Settings;
 
-namespace MCForge
-{
-    public class MCForgeServer
-    {
+namespace MCForge {
+    public class MCForgeServer {
         #region Properties / Members
         /// <summary>
         /// Current Version of MCForge
         /// </summary>
-        public static readonly string Version = "6.0";
+        public static readonly Version Version = new Version(6, 0);
         /// <summary>
         /// <see cref="LibMinecraft.Classic.Server.ClassicServer"/> Object.
         /// </summary>
@@ -25,37 +24,46 @@ namespace MCForge
         /// <see cref="LibMinecraft.Classic.Model.MinecraftClassicServer"/> Object.
         /// </summary>
         public static MinecraftClassicServer McServer { get; set; }
+
+
+
         #endregion
 
         /// <summary>
         /// Starts MCForge
         /// </summary>
-        public static void Start()
-        {
+        public static void Start() {
+
             //TODO init all the things
             Logger.Init();
-            Settings.Init();
+            ServerSettings.Init();
             ClassicServer = new ClassicServer();
             McServer = new MinecraftClassicServer();
 
-            
+
 
             //TODO: register all events
             Logger.OnRecieveLog += OnLog;
-            
-            
+
+
 
             Logger.Log("Starting MCForge");
-            
-            McServer.MaxPlayers = Settings.GetSettingInt("MaxPlayers");
-            McServer.MotD = Settings.GetSetting("MOTD");
-            McServer.Name = Settings.GetSetting("ServerName");
-            McServer.Port = Settings.GetSettingInt("Port");
-            McServer.Private = Settings.GetSetting("Public") == "true";
 
-            ClassicServer.Start(McServer);
+            McServer.MaxPlayers = ServerSettings.GetSettingInt("MaxPlayers");
+            McServer.MotD = ServerSettings.GetSetting("MOTD");
+            McServer.Name = ServerSettings.GetSetting("ServerName");
+            McServer.Port = ServerSettings.GetSettingInt("Port");
+            McServer.Private = !ServerSettings.GetSettingBoolean("Public");
 
-            Console.ReadLine();
+            Logger.Log(ClassicServer.Start(McServer));
+
+            if (ServerSettings.GetSettingBoolean("UsingConsole")) {
+                Logger.OnRecieveLog -= OnLog;
+                MCForgeConsole.Start();
+            }
+            else {
+                //new gui stuff
+            }
 
         }
 
@@ -63,21 +71,30 @@ namespace MCForge
         /// Stops MCForge
         /// </summary>
         /// <remarks>Kicks all players, saves all of the worlds then exits</remarks>
-        public static void Stop(){
-            foreach (var p in ClassicServer.Clients.Select(client => new DisconnectPlayerPacket{Reason = "Server Restarting"})){
-                ClassicServer.EnqueueToAllClients(p);
-            }
+        public static void Stop() {
+
+            ClassicServer.EnqueueToAllClients(new DisconnectPlayerPacket { Reason = ServerSettings.GetSetting("ShutdownMessage") });
 
             foreach (var world in ClassicServer.Worlds)
                 world.Save();
-            
-           // if (ClassicServer != null)
-           //     ClassicServer.Stop();
+            if (ServerSettings.GetSettingBoolean("UsingConsole"))
+                MCForgeConsole.Close();
         }
 
-        private static void OnLog(object sender, LogEventArgs args)
-        {
+        private static void OnLog(object sender, LogEventArgs args) {
             Console.WriteLine(args.Message);
+        }
+
+        public static void GlobalMessage(string format) {
+            //if
+            ClassicServer.Clients.ForEach(client => client.PacketQueue.Enqueue(new MessagePacket(client.PlayerID, format)));
+            Logger.Log(format);
+        }
+        public static void LevelMessage(string message, World mWorld) {
+
+        }
+        public static void KickPlayer(RemoteClient toKick) {
+
         }
     }
 }
