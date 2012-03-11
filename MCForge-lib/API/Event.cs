@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using LibMinecraft.Classic.Server;
 using MCForge.API.Player;
-using LibMinecraft.Classic.Server;
 using LibMinecraft.Classic.Model;
+using LibMinecraft.Classic.Model.Packets;
 
 
 namespace MCForge.API
@@ -65,6 +65,20 @@ namespace MCForge.API
         internal static void INIT()
         {
             MCForgeServer.ClassicServer.OnPlayerConnectionChanged += new System.EventHandler<PlayerConnectionEventArgs>(ClassicServer_OnPlayerConnectionChanged);
+            MCForgeServer.ClassicServer.PrePacketEvent += new System.EventHandler<LibMinecraft.Classic.Server.PrePacketEventArgs>(ClassicServer_PrePacketEvent);
+        }
+
+        static void ClassicServer_PrePacketEvent(object sender, LibMinecraft.Classic.Server.PrePacketEventArgs e)
+        {
+            Event args = null;
+            if (e.Packet.PacketID == PacketID.Message)
+            {
+                e.Packet.ReadPacket(e.Client);
+                args = new PlayerChatEvent(e.Client, ((MessagePacket)e.Packet).Message);
+            }
+            args.Call(args);
+            if (args.IsCanceled)
+                MCForgeServer.ClassicServer.cancelprepacket = true;
         }
 
         static void ClassicServer_OnPlayerConnectionChanged(object sender, PlayerConnectionEventArgs e)

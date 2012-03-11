@@ -1,0 +1,18 @@
+﻿using System;
+using MCForge.API.Player;
+
+namespace MCForge.API
+{
+    public class Example
+    {
+        public void InIt()
+        {
+            PlayerConnectEvent.Register(method, Priority.Low);
+        }
+        public void method(Event args1)
+        {
+            PlayerConnectEvent args = (PlayerConnectEvent)args1;
+            Console.WriteLine("Player = " + args.Player.UserName);
+        }
+    }
+}

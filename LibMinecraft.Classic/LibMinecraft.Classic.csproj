@@ -113,6 +113,7 @@
     <Compile Include="Model\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ClassicServer.cs" />
+    <Compile Include="Server\PrePacketEventArgs.cs" />
     <Compile Include="Server\RemoteClient.cs" />
     <Compile Include="Server\ServerEventArgs.cs" />
   </ItemGroup>
