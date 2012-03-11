@@ -66,6 +66,7 @@ namespace MCForge.Utilities.Settings {
         /// <param name="key">The key</param>
         /// <returns>The setting values, use [0] at end if it only has 1 value</returns>
         public static string[] GetSettingArray(string key) {
+            if (key == null) return new[] { "" };
             var pair = GetPair(key);
             return pair == null ? new[] { "" } : GetPair(key).Value.Split(','); //We don't want to return a null object
         }
@@ -187,12 +188,15 @@ namespace MCForge.Utilities.Settings {
         /// Saves the settings
         /// </summary>
         public static void Save() {
-
+            
             using (var writer = File.CreateText(FileUtils.PropertiesPath + "server.properties")) {
                 foreach (var v in _values) {
-                    writer.WriteLine(v.Description == null
-                                         ? string.Format("{0}={1}", v.Key, v.Value)
-                                         : string.Format("#{0}\n{1}={2}", v.Description, v.Key, v.Value));
+
+                    writer.Write(v.Description == null && v.Key == null
+                        ? v.Value + (v != _values.Last() ? "\n" : "")
+                        : v.Description == null
+                            ? string.Format("{0}={1}" + (v != _values.Last() ? "\n" : ""), v.Key, v.Value)
+                            : string.Format("#{0}\n{1}={2}" + (v != _values.Last() ? "\n" : ""), v.Description, v.Key, v.Value));
 
                 }
             }
@@ -210,15 +214,19 @@ namespace MCForge.Utilities.Settings {
                 string read = text[i];
                 SettingDescriptionPair pair;
 
-                if (String.IsNullOrWhiteSpace(read))
+                if (String.IsNullOrWhiteSpace(read)) {
+                    _values.Add(new SettingDescriptionPair(null, read, null));
                     continue;
+                }
 
-                if (read[0] == '#') {
+                if (read[0] == '#' && (i + 1 < text.Count()) ? text[i + 1][0] != '#' && !String.IsNullOrWhiteSpace(text[i+1]) : false) {
                     i++;
                     pair = new SettingDescriptionPair(text[i].Split('=')[0].Trim(), text[i].Split('=')[1].Trim(), read.Substring(1));
                 }
                 else {
-                    pair = new SettingDescriptionPair(read.Split('=')[0].Trim(), read.Split('=')[1].Trim(), null);
+                    if (read[0] != '#')
+                        pair = new SettingDescriptionPair(read.Split('=')[0].Trim(), read.Split('=')[1].Trim(), null);
+                    else pair = new SettingDescriptionPair(null, text[i], null);
                 }
                 _values.Add(pair);
             }
