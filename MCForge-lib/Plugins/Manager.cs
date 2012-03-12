@@ -5,6 +5,7 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using MCForge.Plugins.MCForgePlugins;
 
 namespace MCForge.Plugins
 {
@@ -63,6 +64,14 @@ namespace MCForge.Plugins
             }
             else
                 Directory.CreateDirectory("plugins");
+        }
+        public static void Init() {
+            all.AddRange(new List<Plugin> { 
+            new PluginCuboid(),
+
+            });
+
+            all.ForEach(p => p.Load());
         }
         public static void Unload(Plugin p)
         {
