@@ -65,8 +65,8 @@ namespace MCForge.Utilities.Settings {
         /// </summary>
         /// <param name="key">The key</param>
         /// <returns>The setting values, use [0] at end if it only has 1 value</returns>
-        /// <remarks>each value is seperated by a comma</remarks>
         public static string[] GetSettingArray(string key) {
+            if (key == null) return new[] { "" };
             var pair = GetPair(key);
             return pair == null ? new[] { "" } : GetPair(key).Value.Split(','); //We don't want to return a null object
         }
@@ -76,8 +76,8 @@ namespace MCForge.Utilities.Settings {
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting values, use [0] at end if it only has 1 value</returns>
-        /// <remarks>each value is seperated by a comma</remarks>
+        /// <returns>The setting value</returns>
+        /// <remarks>Returns the first value if multiple values are present</remarks>
         public static string GetSetting(string key) {
             return GetSettingArray(key)[0];
         }
@@ -86,21 +86,27 @@ namespace MCForge.Utilities.Settings {
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting value specified by the key, or -1 if the setting is not found</returns>
+        /// <returns>The setting value specified by the key, or -1 if the setting is not found or could not be parsed</returns>
         public static int GetSettingInt(string key) {
             int i;
             var pair = GetPair(key);
             if (pair == null)
                 return -1;
-            int.TryParse(GetPair(key).Value, out i);
-            return i;
+            try {
+                int.TryParse(GetPair(key).Value, out i);
+                return i;
+            }
+            catch {
+                Logger.Log("ServerSettings: integer expected as first value for '" + key + "'", LogType.Error);
+                return -1;
+            }
         }
 
         /// <summary>
         /// Gets a setting
         /// </summary>
         /// <param name="key">The key</param>
-        /// <returns>The setting value specified by the key</returns>
+        /// <returns>The setting value specified by the key, or false if the setting is not found</returns>
         public static bool GetSettingBoolean(string key) {
             return GetSetting(key).ToLower() == "true";
         }
@@ -132,7 +138,7 @@ namespace MCForge.Utilities.Settings {
         /// Set the setting
         /// </summary>
         /// <param name="key">key to save value to</param>
-        /// <param name="value">value to set setting to</param>
+        /// <param name="value">value (or multiple values sperated by a comma ',') to set setting to</param>
         /// <param name="description">Write a description (optional)</param>
         /// <remarks>If the setting does not exist, it will create a new one</remarks>
         public static void SetSetting(string key, int value, string description = null) {
@@ -182,12 +188,15 @@ namespace MCForge.Utilities.Settings {
         /// Saves the settings
         /// </summary>
         public static void Save() {
-
+            
             using (var writer = File.CreateText(FileUtils.PropertiesPath + "server.properties")) {
                 foreach (var v in _values) {
-                    writer.WriteLine(v.Description == null
-                                         ? string.Format("{0}={1}", v.Key, v.Value)
-                                         : string.Format("#{0}\n{1}={2}", v.Description, v.Key, v.Value));
+
+                    writer.Write(v.Description == null && v.Key == null
+                        ? v.Value + (v != _values.Last() ? "\n" : "")
+                        : v.Description == null
+                            ? string.Format("{0}={1}" + (v != _values.Last() ? "\n" : ""), v.Key, v.Value)
+                            : string.Format("#{0}\n{1}={2}" + (v != _values.Last() ? "\n" : ""), v.Description, v.Key, v.Value));
 
                 }
             }
@@ -205,15 +214,19 @@ namespace MCForge.Utilities.Settings {
                 string read = text[i];
                 SettingDescriptionPair pair;
 
-                if (String.IsNullOrWhiteSpace(read))
+                if (String.IsNullOrWhiteSpace(read)) {
+                    _values.Add(new SettingDescriptionPair(null, read, null));
                     continue;
+                }
 
-                if (read[0] == '#') {
+                if (read[0] == '#' && (i + 1 < text.Count()) ? text[i + 1][0] != '#' && !String.IsNullOrWhiteSpace(text[i+1]) : false) {
                     i++;
                     pair = new SettingDescriptionPair(text[i].Split('=')[0].Trim(), text[i].Split('=')[1].Trim(), read.Substring(1));
                 }
                 else {
-                    pair = new SettingDescriptionPair(read.Split('=')[0].Trim(), read.Split('=')[1].Trim(), null);
+                    if (read[0] != '#')
+                        pair = new SettingDescriptionPair(read.Split('=')[0].Trim(), read.Split('=')[1].Trim(), null);
+                    else pair = new SettingDescriptionPair(null, text[i], null);
                 }
                 _values.Add(pair);
             }
