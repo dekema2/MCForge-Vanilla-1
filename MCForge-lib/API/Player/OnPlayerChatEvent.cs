@@ -62,7 +62,6 @@ namespace MCForge.API.Player
             r.method = method;
             r.priority = priority;
             r.Push();
-            Event.Organize();
         }
         #endregion
     }

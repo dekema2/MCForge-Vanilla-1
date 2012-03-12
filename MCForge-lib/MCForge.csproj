@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="API\Event.cs" />
     <Content Include="API\Example.txt" />
+    <Compile Include="API\Helper.cs" />
     <Compile Include="API\Player\OnPlayerDisconnectEvent.cs" />
     <Compile Include="API\Player\OnPlayerChatEvent.cs" />
     <Compile Include="API\Player\OnPlayerConnectEvent.cs" />
