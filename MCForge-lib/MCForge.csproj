@@ -60,7 +60,9 @@
     <Compile Include="Player\Player.cs" />
     <Content Include="API\TODO.txt" />
     <Content Include="Plugins\Example.txt" />
+    <Compile Include="Plugins\MCForgePlugins\PluginCuboid.cs" />
     <Compile Include="Plugins\Manager.cs" />
+    <Compile Include="Plugins\MCForgePlugins\PluginSetting.cs" />
     <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\FileUtils.cs" />

@@ -10,6 +10,7 @@ using LibMinecraft.Classic.Model.Packets;
 using MCForge.Utilities.Settings;
 using MCForge.API.Player;
 using MCForge.API;
+using MCForge.Plugins;
 
 namespace MCForge {
     public class MCForgeServer {
@@ -35,19 +36,16 @@ namespace MCForge {
         /// Starts MCForge
         /// </summary>
         public static void Start() {
+            Logger.OnRecieveLog += OnLog;
+
 
             //TODO init all the things
             Logger.Init();
             ServerSettings.Init();
             FileUtils.Init();
-
+            Manager.Init();
             ClassicServer = new ClassicServer();
             McServer = new MinecraftClassicServer();
-
-
-
-            //TODO: register all events
-            Logger.OnRecieveLog += OnLog;
 
 
 

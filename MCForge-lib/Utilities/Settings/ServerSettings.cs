@@ -188,7 +188,7 @@ namespace MCForge.Utilities.Settings {
         /// Saves the settings
         /// </summary>
         public static void Save() {
-            
+
             using (var writer = File.CreateText(FileUtils.PropertiesPath + "server.properties")) {
                 foreach (var v in _values) {
 
@@ -214,12 +214,11 @@ namespace MCForge.Utilities.Settings {
                 string read = text[i];
                 SettingDescriptionPair pair;
 
-                if (String.IsNullOrWhiteSpace(read)) {
-                    _values.Add(new SettingDescriptionPair(null, read, null));
+                if (String.IsNullOrWhiteSpace(read)) 
                     continue;
-                }
+                
 
-                if (read[0] == '#' && (i + 1 < text.Count()) ? text[i + 1][0] != '#' && !String.IsNullOrWhiteSpace(text[i+1]) : false) {
+                if (read[0] == '#' && (i + 1 < text.Count()) ? text[i + 1][0] != '#' && !String.IsNullOrWhiteSpace(text[i + 1]) : false) {
                     i++;
                     pair = new SettingDescriptionPair(text[i].Split('=')[0].Trim(), text[i].Split('=')[1].Trim(), read.Substring(1));
                 }
