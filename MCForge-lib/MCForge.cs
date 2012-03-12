@@ -39,6 +39,8 @@ namespace MCForge {
             //TODO init all the things
             Logger.Init();
             ServerSettings.Init();
+            FileUtils.Init();
+
             ClassicServer = new ClassicServer();
             McServer = new MinecraftClassicServer();
 

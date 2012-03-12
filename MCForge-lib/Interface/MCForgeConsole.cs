@@ -39,7 +39,7 @@ namespace MCForge.Interface {
                         return;
                     }
 
-                    MCForgeServer.GlobalMessage(string.Format("&f[{0}{1}&f] {2}", ServerSettings.GetSetting("ConsoleName")[0], ServerSettings.GetSetting("ConsoleName")[1], lineRead));
+                    MCForgeServer.GlobalMessage(string.Format("&f[{0}{1}&f] {2}", ServerSettings.GetSettingArray("ConsoleName")[0], ServerSettings.GetSettingArray("ConsoleName")[1], lineRead));
                 }
             }
         }
