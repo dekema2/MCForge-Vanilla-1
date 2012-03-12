@@ -2,3 +2,10 @@
 
 -Remake this shitty system...
 -Or fix the delegate thinggy
+
+FAQ:
+Q: Why arnt we using the normal event things the .net frameworks gives up?
+A: 1. Idk, 2. Our event system will have a priority system, so plugin devs can specify which events are more imporant
+
+Q: Why make an interface for the Event system? Why not use the old event system from 5.5
+A: This will allow plugin devs to create there own events for there plugin and makes my job eaiser.

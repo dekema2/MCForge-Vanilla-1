@@ -10,7 +10,7 @@ namespace MCForge.API
     internal class Cache
     {
         public Event e;
-        public Event.OnCall method;
+        public object method;
         public Priority priority;
         public Cache() { }
         internal void Push() { Event.cache.Add(this); }
@@ -23,11 +23,6 @@ namespace MCForge.API
         internal abstract string name { get; }
         internal static List<Cache> cache = new List<Cache>();
         bool _canceled;
-        /// <summary>
-        /// The delegate that is called when the event is executed
-        /// </summary>
-        /// <param name="e"></param>
-        public delegate void OnCall(Event e);
         /// <summary>
         /// Weather or not the event can be canceled
         /// </summary>
@@ -54,14 +49,8 @@ namespace MCForge.API
         /// Execute the event
         /// </summary>
         /// <param name="e">The eventargs to pass</param>
-        public virtual void Call(Event e)
-        {
-            cache.ForEach(r =>
-            {
-                if (r.e.name == e.name)
-                    r.method(e);
-            });
-        }
+        public abstract void Call();
+
         internal static void INIT()
         {
             MCForgeServer.ClassicServer.OnPlayerConnectionChanged += new System.EventHandler<PlayerConnectionEventArgs>(ClassicServer_OnPlayerConnectionChanged);
@@ -74,9 +63,9 @@ namespace MCForge.API
             if (e.Packet.PacketID == PacketID.Message)
             {
                 e.Packet.ReadPacket(e.Client);
-                args = new PlayerChatEvent(e.Client, ((MessagePacket)e.Packet).Message);
+                args = new OnPlayerChatEvent(e.Client, ((MessagePacket)e.Packet).Message);
             }
-            args.Call(args);
+            args.Call();
             if (args.IsCanceled)
                 MCForgeServer.ClassicServer.cancelprepacket = true;
         }
@@ -85,10 +74,10 @@ namespace MCForge.API
         {
             Event args = null;
             if (e.ConnectionState == LibMinecraft.Classic.Server.ConnectionState.Connected)
-                args = new PlayerConnectEvent(e.Client);
+                args = new OnPlayerConnectEvent(e.Client);
             if (e.ConnectionState == LibMinecraft.Classic.Server.ConnectionState.Disconnected)
-                args = new PlayerDisconnectEvent(e.Client);
-            args.Call(args);
+                args = new OnPlayerDisconnectEvent(e.Client);
+            args.Call();
         }
         //UNTESTED CODE
         //I need to test this..but I dont have anything to test it on so I'll leave it here for now

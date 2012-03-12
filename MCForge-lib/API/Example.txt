@@ -5,14 +5,18 @@ namespace MCForge.API
 {
     public class Example
     {
-        public void InIt()
+        public void Test()
         {
-            PlayerConnectEvent.Register(method, Priority.Low);
+            OnPlayerChatEvent.Register(onchat, Priority.High);
+            OnPlayerConnectEvent.Register(onconnect, Priority.Low);
         }
-        public void method(Event args1)
+        public void onchat(OnPlayerChatEvent args)
         {
-            PlayerConnectEvent args = (PlayerConnectEvent)args1;
-            Console.WriteLine("Player = " + args.Player.UserName);
+
+        }
+        public void onconnect(OnPlayerConnectEvent args)
+        {
+
         }
     }
 }
