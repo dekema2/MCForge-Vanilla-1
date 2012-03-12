@@ -1,4 +1,0 @@
-﻿GamezGalaxy TODO List:
-
--Remake this shitty system...
--Or fix the delegate thinggy
