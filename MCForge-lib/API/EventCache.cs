@@ -45,12 +45,6 @@ namespace MCForge.API
             });
         }
 
-        public static void Register(EventType type, Priority priority, EventCall method)
-        {
-            EventCacheItem item = new EventCacheItem(type, priority, method);
-            item.Push();
-        }
-
 
 
         //UNTESTED CODE

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using MCForge.Plugins.MCForgePlugins;
+using MCForge.API;
 
 namespace MCForge.Plugins
 {
@@ -83,6 +84,14 @@ namespace MCForge.Plugins
                 {
                     Unload(p);
                 });
+        }
+
+        public static void RegisterEvent(EventType type, Priority priority, Delegate method)
+        {
+            // TODO: Have this call register method on proper event class.
+
+            /*EventCacheItem item = new EventCacheItem(type, priority, method);
+            item.Push();*/
         }
     }
 }
