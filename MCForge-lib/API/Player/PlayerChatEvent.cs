@@ -4,63 +4,30 @@ using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public class PlayerChatEvent : Event
+    public class PlayerChatEvent : PlayerEvent, Cancellable
     {
-        #region Delegates
-        public delegate void OnCall(PlayerChatEvent args);
-        #endregion
-
-        #region Args
+        public override EventType Type { get { return EventType.PLAYER_CHAT; } }
+        private bool _cancelled;
         public string Message { get; set; }
-        public PlayerChatEvent(RemoteClient c, string Message) { this.Message = Message; this.client = c; }
-        public PlayerChatEvent() { }
-        #endregion
 
-        #region Event Overrides
-        public override void Call()
+        public PlayerChatEvent(RemoteClient player, string Message)
         {
-            cache.ForEach(r =>
-            {
-                if (r.e.name == name)
-                    ((OnCall)(r.method))(this);
-            });
+            this.player = player;
+            this.Message = Message;
         }
-        public override void Cancel(bool value)
-        {
-            base.Cancel(value);
-        }
-        public override bool IsCancelable
-        {
-            get { return true; }
-        }
-        public override bool IsCanceled
-        {
-            get
-            {
-                return base.IsCanceled;
-            }
-        }
-        internal override string name
-        {
-            get { return "playerchatevent"; }
-        }
-        #endregion
 
-        #region Other Methods
         /// <summary>
-        /// Register this event
-        /// The method name must be PlayerConnectEvent
+        /// Weather or not the event is canceled
         /// </summary>
-        /// <param name="method">The method that will be called when the event is executed</param>
-        /// <param name="priority">The priority of the call</param>
-        public static void Register(OnCall method, Priority priority)
+        public bool IsCancelled { get { return _cancelled; } }
+
+        /// <summary>
+        /// Set the cancelled state on this event
+        /// </summary>
+        /// <param name="value">Weather or not the event will be cancelled</param>
+        public void SetCancelled(bool value)
         {
-            Cache r = new Cache();
-            r.e = new PlayerChatEvent();
-            r.method = method;
-            r.priority = priority;
-            r.Push();
+            _cancelled = value;
         }
-        #endregion
     }
 }

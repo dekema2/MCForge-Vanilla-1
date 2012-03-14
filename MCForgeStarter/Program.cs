@@ -1,5 +1,4 @@
-﻿
-namespace MCForgeStarter
+﻿namespace MCForgeStarter
 {
     class Program
     {

@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MCForge">
-      <HintPath>..\MCForge-lib\bin\Debug\MCForge.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gui\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MCForge-lib\MCForge.csproj">
+      <Project>{928E3073-7837-4B39-9E66-3E2DDD1D0E7F}</Project>
+      <Name>MCForge</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

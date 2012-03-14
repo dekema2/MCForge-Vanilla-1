@@ -7,19 +7,24 @@ namespace MCForge.API
 {
     internal sealed class EventCacheItem
     {
-        public Event e;
-        public Event.OnCall method;
+        public EventType type;
+        public EventCall method;
         public Priority priority;
-        public EventCacheItem() { }
+        public EventCacheItem(EventType type, Priority priority, EventCall method)
+        {
+            this.type = type;
+            this.method = method;
+            this.priority = priority;
+        }
         internal void Push()
         {
-            int i = EventCache.cache.FindIndex(c => { return c.e.GetType() == this.e.GetType(); });//finds first element with same type
+            int i = EventCache.cache.FindIndex(c => { return c.type == this.type; });//finds first element with same type
             if (i >= 0)
             {
                 i = EventCache.cache.FindIndex(i, EventCache.cache.Count - i, c =>
                 {
-                    return (c.priority >= this.priority && c.e.GetType() == this.e.GetType()) //if c has less priority and same event type (lower value == higher priority)
-                        || c.e.GetType() != this.e.GetType();                                 //or c has another type
+                    return (c.priority >= this.priority && c.type == this.type) //if c has less priority and same event type (lower value == higher priority)
+                        || c.type != this.type;                                 //or c has another type
                 });
                 if (i >= 0) EventCache.cache.Insert(i, this);                                          //this takes place in front of c
             }
@@ -31,13 +36,19 @@ namespace MCForge.API
     {
         internal static List<EventCacheItem> cache = new List<EventCacheItem>();
 
-        public static sealed void Call(Event e)
+        public static void Call(Event e)
         {
             cache.ForEach(r =>
             {
-                if (r.e.GetType() == e.GetType())
+                if (r.type == e.Type)
                     r.method(e);
             });
+        }
+
+        public static void Register(EventType type, Priority priority, EventCall method)
+        {
+            EventCacheItem item = new EventCacheItem(type, priority, method);
+            item.Push();
         }
 
 

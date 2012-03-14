@@ -1,0 +1,12 @@
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MCForgeStarter.exe
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MCForgeStarter.pdb
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MCForge.dll
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\LibMinecraft.Classic.dll
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MySql.Data.dll
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MCForge.pdb
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\MCForge.xml
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\LibMinecraft.Classic.pdb
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\bin\Debug\LibMinecraft.Classic.xml
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\obj\x86\Debug\MCForgeStarter.exe
+C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\MCForgeStarter\obj\x86\Debug\MCForgeStarter.pdb

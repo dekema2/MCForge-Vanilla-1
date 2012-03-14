@@ -3,9 +3,9 @@ using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public abstract class PlayerEvent
+    public abstract class PlayerEvent : Event
     {
         protected RemoteClient player;
-        public sealed RemoteClient Player { get { return player; } }
+        public RemoteClient Player { get { return player; } }
     }
 }

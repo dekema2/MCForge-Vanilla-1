@@ -51,7 +51,7 @@
     <Compile Include="API\Cancellable.cs" />
     <Compile Include="API\Event.cs" />
     <Compile Include="API\EventCache.cs" />
-    <Compile Include="API\EventListener.cs" />
+    <Compile Include="API\Player\PlayerChatEvent.cs" />
     <Compile Include="API\Player\PlayerConnectEvent.cs" />
     <Compile Include="API\Player\PlayerDisconnectEvent.cs" />
     <Compile Include="API\Player\PlayerEvent.cs" />

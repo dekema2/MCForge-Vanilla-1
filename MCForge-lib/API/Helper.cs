@@ -11,19 +11,19 @@ namespace MCForge.API
         internal static void INIT()
         {
             MCForgeServer.ClassicServer.OnPlayerConnectionChanged += new System.EventHandler<PlayerConnectionEventArgs>(ClassicServer_OnPlayerConnectionChanged);
-            MCForgeServer.ClassicServer.PrePacketEvent += new System.EventHandler<LibMinecraft.Classic.Server.PrePacketEventArgs>(ClassicServer_PrePacketEvent);
+            MCForgeServer.ClassicServer.PrePacketEvent += new System.EventHandler<PrePacketEventArgs>(ClassicServer_PrePacketEvent);
         }
 
         static void ClassicServer_PrePacketEvent(object sender, LibMinecraft.Classic.Server.PrePacketEventArgs e)
         {
-            Event args = null;
+            PlayerChatEvent args = null;
             if (e.Packet.PacketID == PacketID.Message)
             {
                 e.Packet.ReadPacket(e.Client);
                 args = new PlayerChatEvent(e.Client, ((MessagePacket)e.Packet).Message);
             }
-            args.Call();
-            if (args.IsCanceled)
+            EventCache.Call(args);
+            if (args.IsCancelled)
                 MCForgeServer.ClassicServer.cancelprepacket = true;
         }
 
@@ -34,7 +34,7 @@ namespace MCForge.API
                 args = new PlayerConnectEvent(e.Client);
             if (e.ConnectionState == LibMinecraft.Classic.Server.ConnectionState.Disconnected)
                 args = new PlayerDisconnectEvent(e.Client);
-            args.Call();
+            EventCache.Call(args);
         }
     }
 }
