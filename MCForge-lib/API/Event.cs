@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using LibMinecraft.Classic.Server;
 using MCForge.API.Player;
-using LibMinecraft.Classic.Server;
 using LibMinecraft.Classic.Model;
+using LibMinecraft.Classic.Model.Packets;
 
 
 namespace MCForge.API

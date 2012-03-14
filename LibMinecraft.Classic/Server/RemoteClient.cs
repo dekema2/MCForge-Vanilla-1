@@ -39,6 +39,16 @@ namespace LibMinecraft.Classic.Server
         /// <remarks></remarks>
         public EndPoint EndPoint { get; set; }
         /// <summary>
+        /// Gets the string representation of the client's ip address.
+        /// </summary>
+        /// <value>The ip address.</value>
+        /// <remarks></remarks>
+        public string IpAddress {
+            get {
+                return EndPoint.ToString().Split(':')[0];
+            }
+        }
+        /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
         /// <value>The name of the user.</value>

@@ -1,0 +1,22 @@
+﻿using System;
+using MCForge.API.Player;
+
+namespace MCForge.API
+{
+    public class Example
+    {
+        public void Test()
+        {
+            OnPlayerChatEvent.Register(onchat, Priority.High);
+            OnPlayerConnectEvent.Register(onconnect, Priority.Low);
+        }
+        public void onchat(OnPlayerChatEvent args)
+        {
+
+        }
+        public void onconnect(OnPlayerConnectEvent args)
+        {
+
+        }
+    }
+}

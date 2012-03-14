@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MCForge</name>
+    </assembly>
+    <members>
+        <member name="M:MCForge.Database.Databasing.CreateDatabases">
+            <summary>
+            Creates the default databases.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.Databasing.Initialize">
+            <summary>
+            Initializes this instance with defaults.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:MCForge.Utilities.Logger">
+            <summary>
+            Logger Utility
+            </summary>
+        </member>
+        <member name="F:MCForge.Utilities.Logger.OnRecieveLog">
+            <summary>
+            This event is called when Logger.Log() is called
+            </summary>
+        </member>
+        <member name="F:MCForge.Utilities.Logger.OnRecieveErrorLog">
+            <summary>
+            This event is called when Logger.LogError() is called
+            </summary>
+        </member>
+        <member name="M:MCForge.Utilities.Logger.Init">
+            <summary>
+            Initializes Logger object
+            </summary>
+            <remarks>Must be called before any of the methods are invoked</remarks>
+        </member>
+        <member name="M:MCForge.Utilities.Logger.Log(System.String,MCForge.Utilities.LogType)">
+            <summary>
+            Logs a message, to be grabbed by a log event handler
+            </summary>
+            <param name="message">The message to be logged</param>
+            <param name="logType">The log type</param>
+        </member>
+        <member name="M:MCForge.Utilities.Logger.LogError(System.Exception)">
+            <summary>
+            Logs an exception, to be grabbed by a log event handler
+            </summary>
+            <param name="e">Exception to be logged</param>
+        </member>
+        <member name="M:MCForge.API.Event.Cancel(System.Boolean)">
+            <summary>
+            Cancel the event
+            </summary>
+            <param name="value">If true, the event will be canceled, if false, the event will be un-canceled</param>
+        </member>
+        <member name="M:MCForge.API.Event.Call(MCForge.API.Event)">
+            <summary>
+            Execute the event
+            </summary>
+            <param name="e">The eventargs to pass</param>
+        </member>
+        <member name="P:MCForge.API.Event.name">
+            <summary>
+            The name of the event
+            </summary>
+        </member>
+        <member name="P:MCForge.API.Event.IsCancelable">
+            <summary>
+            Weather or not the event can be canceled
+            </summary>
+        </member>
+        <member name="P:MCForge.API.Event.IsCanceled">
+            <summary>
+            Weather or not the event is canceled
+            </summary>
+        </member>
+        <member name="T:MCForge.API.Event.OnCall">
+            <summary>
+            The delegate that is called when the event is executed
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:MCForge.API.Player.PlayerDisconnectEvent.Register(MCForge.API.Event.OnCall,MCForge.API.Priority)">
+            <summary>
+            Register this event
+            </summary>
+            <param name="method">The method that will be called when the event is executed</param>
+            <param name="priority">The priority of the call</param>
+        </member>
+        <member name="M:MCForge.API.Player.PlayerChatEvent.Register(MCForge.API.Event.OnCall,MCForge.API.Priority)">
+            <summary>
+            Register this event
+            </summary>
+            <param name="method">The method that will be called when the event is executed</param>
+            <param name="priority">The priority of the call</param>
+        </member>
+        <member name="T:MCForge.API.Priority">
+            <summary>
+            The Priority of the event
+            Low - Low will be called first and makes any changes first
+            Normal - Normal will be called second, this is the default
+            High - High will be called thrid and should only be used if you need the last say
+            System_Level - This should only be used for moderatoring actions and not change
+            </summary>
+        </member>
+        <member name="M:MCForge.Database.DatabaseHelper.Create">
+            <summary>
+            The database helpers
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.DatabaseHelper.Execute(System.String)">
+            <summary>
+            Executes the specified query.
+            </summary>
+            <param name="query">The query.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.DatabaseHelper.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:MCForge.Database.MySQLHelper">
+            <summary>
+            Database stuff for MySQL
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MCForge.Database.MySQLHelper"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MCForge.Database.MySQLHelper"/> class.
+            </summary>
+            <param name="ConnString">The MySQL connection string.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.Execute(System.String)">
+            <summary>
+            Executes the query in MySQL.
+            </summary>
+            <param name="query">The query.</param>
+            <returns>true if executed without errors, false otherwise</returns>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.Create">
+            <summary>
+            Creates this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.Create(System.String)">
+            <summary>
+            Creates instance using the specified MySQL connection string.
+            </summary>
+            <param name="connString">The MySQL connection string.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:MCForge.Database.MySQLHelper.Dispose">
+            <summary>
+            Disposes this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:MCForge.Utilities.Settings">
+            <summary>
+            Settings Utility
+            </summary>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.Init">
+            <summary>
+            Starts the Settings Object
+            </summary>
+            <remarks>Must be called before any methods are invoked</remarks>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.GetSetting(System.String)">
+            <summary>
+            Gets a setting
+            </summary>
+            <param name="key">The key</param>
+            <returns>The setting value specified by the key</returns>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.GetSettingInt(System.String)">
+            <summary>
+            Gets a setting
+            </summary>
+            <param name="key">The key</param>
+            <returns>The setting value specified by the key</returns>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.GetSettingBoolean(System.String)">
+            <summary>
+            Gets a setting
+            </summary>
+            <param name="key">The key</param>
+            <returns>The setting value specified by the key</returns>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.SetSetting(System.String,System.String,System.String[])">
+            <summary>
+            Set the setting
+            </summary>
+            <param name="key">key to save value to</param>
+            <param name="discription"> </param>
+            <param name="values">for each string in values, it will be seperated by a comma ','</param>
+            <remarks>If the setting does not exist, it will create a new one</remarks>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.SetSetting(System.String,System.Int32)">
+            <summary>
+            Set the setting
+            </summary>
+            <param name="key">key to save value to</param>
+            <param name="value">value to set setting to</param>
+            <remarks>If the setting does not exist, it will create a new one</remarks>
+        </member>
+        <member name="M:MCForge.Utilities.Settings.SetSetting(System.String,System.Boolean)">
+            <summary>
+            Set the setting
+            </summary>
+            <param name="key">key to save value to</param>
+            <param name="value">value to set setting to</param>
+            <remarks>If the setting does not exist, it will create a new one</remarks>
+        </member>
+        <member name="T:MCForge.Events.LogEventArgs">
+             <summary>
+            Log event where object holding the event
+            would get a string (the message)
+             </summary>
+        </member>
+        <member name="M:MCForge.API.Player.PlayerConnectEvent.Register(MCForge.API.Event.OnCall,MCForge.API.Priority)">
+            <summary>
+            Register this event
+            The method name must be PlayerConnectEvent
+            </summary>
+            <param name="method">The method that will be called when the event is executed</param>
+            <param name="priority">The priority of the call</param>
+        </member>
+        <member name="M:MCForge.Plugins.Plugin.Load">
+            <summary>
+            Load the plugin (Will throw an exception if the plugin is already loaded
+            </summary>
+        </member>
+        <member name="M:MCForge.Plugins.Plugin.Unload">
+            <summary>
+            Unload the plugin (Will thow an exception if the plugin is not loaded)
+            </summary>
+        </member>
+        <member name="M:MCForge.Plugins.Plugin.OnCommand(MCForge.Client.Player,System.String,System.String[])">
+            <summary>
+            This method is called when a player on the server does a command
+            </summary>
+            <param name="p">The player who did the command</param>
+            <param name="cmd">The command name</param>
+            <param name="args">The args <example>(ex: /test 1 2 3 - args[0] = 1, args[1] = 2, args[2] = 3)</example></param>
+        </member>
+        <member name="P:MCForge.Plugins.Plugin.loaded">
+            <summary>
+            If true, the plugin is loaded. If false, the plugin is not loaded
+            </summary>
+        </member>
+        <member name="P:MCForge.Plugins.Plugin.name">
+            <summary>
+            The name of the plugin
+            </summary>
+        </member>
+        <member name="P:MCForge.Plugins.Plugin.version">
+            <summary>
+            The version of the plugin
+            </summary>
+        </member>
+        <member name="P:MCForge.Plugins.Plugin.website">
+            <summary>
+            The support website for the plugin
+            </summary>
+        </member>
+        <member name="P:MCForge.Plugins.Plugin.creator">
+            <summary>
+            The creator of the plugin
+            </summary>
+        </member>
+        <member name="F:MCForge.MCForgeServer.Version">
+            <summary>
+            Current Version of MCForge
+            </summary>
+        </member>
+        <member name="M:MCForge.MCForgeServer.Start">
+            <summary>
+            Starts MCForge
+            </summary>
+        </member>
+        <member name="M:MCForge.MCForgeServer.Stop">
+            <summary>
+            Stops MCForge
+            </summary>
+            <remarks>Kicks all players, saves all of the worlds then exits</remarks>
+        </member>
+        <member name="P:MCForge.MCForgeServer.ClassicServer">
+            <summary>
+            <see cref="T:LibMinecraft.Classic.Server.ClassicServer"/> Object.
+            </summary>
+        </member>
+        <member name="P:MCForge.MCForgeServer.McServer">
+            <summary>
+            <see cref="T:LibMinecraft.Classic.Model.MinecraftClassicServer"/> Object.
+            </summary>
+        </member>
+    </members>
+</doc>

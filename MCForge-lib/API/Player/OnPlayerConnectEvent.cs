@@ -3,21 +3,21 @@ using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public class PlayerDisconnectEvent : Event
+    public class OnPlayerConnectEvent : Event
     {
         #region Delegates
-        public delegate void OnCall(PlayerDisconnectEvent e);
+        public delegate void OnCall(OnPlayerConnectEvent e);
         #endregion
 
         #region Args
         RemoteClient player;
         public RemoteClient Player { get { return player; } }
-        public PlayerDisconnectEvent(RemoteClient player) { this.player = player; }
-        internal PlayerDisconnectEvent() { }
+        public OnPlayerConnectEvent(RemoteClient player) { this.player = player; }
+        internal OnPlayerConnectEvent() { }
         #endregion
 
         #region Event Override
-        internal override string name { get { return "playerdisconnect"; } }
+        internal override string name { get { return "playerconnect"; } }
         public override void Call()
         {
             cache.ForEach(r =>
@@ -43,7 +43,7 @@ namespace MCForge.API.Player
         public static void Register(OnCall method, Priority priority)
         {
             Cache r = new Cache();
-            r.e = new PlayerConnectEvent();
+            r.e = new OnPlayerConnectEvent();
             r.method = method;
             r.priority = priority;
             r.Push();

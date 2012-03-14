@@ -3,17 +3,17 @@ using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public class PlayerDisconnectEvent : Event
+    public class OnPlayerDisconnectEvent : Event
     {
         #region Delegates
-        public delegate void OnCall(PlayerDisconnectEvent e);
+        public delegate void OnCall(OnPlayerDisconnectEvent e);
         #endregion
 
         #region Args
         RemoteClient player;
         public RemoteClient Player { get { return player; } }
-        public PlayerDisconnectEvent(RemoteClient player) { this.player = player; }
-        internal PlayerDisconnectEvent() { }
+        public OnPlayerDisconnectEvent(RemoteClient player) { this.player = player; }
+        internal OnPlayerDisconnectEvent() { }
         #endregion
 
         #region Event Override
@@ -43,7 +43,7 @@ namespace MCForge.API.Player
         public static void Register(OnCall method, Priority priority)
         {
             Cache r = new Cache();
-            r.e = new PlayerConnectEvent();
+            r.e = new OnPlayerConnectEvent();
             r.method = method;
             r.priority = priority;
             r.Push();

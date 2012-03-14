@@ -7,6 +7,6 @@ namespace MCForge.API
 {
     public abstract class EventListener
     {
-
+        // TODO: Fill this with On{EVENTNAME} methods...
     }
 }

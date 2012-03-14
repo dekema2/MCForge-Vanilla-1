@@ -1,23 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using LibMinecraft.Classic.Server;
 
 namespace MCForge.API.Player
 {
-    public class PlayerDisconnectEvent : Event
+    public class PlayerChatEvent : Event
     {
         #region Delegates
-        public delegate void OnCall(PlayerDisconnectEvent e);
+        public delegate void OnCall(PlayerChatEvent args);
         #endregion
 
         #region Args
-        RemoteClient player;
-        public RemoteClient Player { get { return player; } }
-        public PlayerDisconnectEvent(RemoteClient player) { this.player = player; }
-        internal PlayerDisconnectEvent() { }
+        public string Message { get; set; }
+        public PlayerChatEvent(RemoteClient c, string Message) { this.Message = Message; this.client = c; }
+        public PlayerChatEvent() { }
         #endregion
 
-        #region Event Override
-        internal override string name { get { return "playerdisconnect"; } }
+        #region Event Overrides
         public override void Call()
         {
             cache.ForEach(r =>
@@ -26,10 +25,24 @@ namespace MCForge.API.Player
                     ((OnCall)(r.method))(this);
             });
         }
-        
+        public override void Cancel(bool value)
+        {
+            base.Cancel(value);
+        }
         public override bool IsCancelable
         {
-            get { return false; }
+            get { return true; }
+        }
+        public override bool IsCanceled
+        {
+            get
+            {
+                return base.IsCanceled;
+            }
+        }
+        internal override string name
+        {
+            get { return "playerchatevent"; }
         }
         #endregion
 
@@ -43,7 +56,7 @@ namespace MCForge.API.Player
         public static void Register(OnCall method, Priority priority)
         {
             Cache r = new Cache();
-            r.e = new PlayerConnectEvent();
+            r.e = new PlayerChatEvent();
             r.method = method;
             r.priority = priority;
             r.Push();

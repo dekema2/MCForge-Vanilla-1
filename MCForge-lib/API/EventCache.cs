@@ -11,7 +11,20 @@ namespace MCForge.API
         public Event.OnCall method;
         public Priority priority;
         public EventCacheItem() { }
-        public void Push() { EventCache.cache.Add(this); }
+        internal void Push()
+        {
+            int i = EventCache.cache.FindIndex(c => { return c.e.GetType() == this.e.GetType(); });//finds first element with same type
+            if (i >= 0)
+            {
+                i = EventCache.cache.FindIndex(i, EventCache.cache.Count - i, c =>
+                {
+                    return (c.priority >= this.priority && c.e.GetType() == this.e.GetType()) //if c has less priority and same event type (lower value == higher priority)
+                        || c.e.GetType() != this.e.GetType();                                 //or c has another type
+                });
+                if (i >= 0) EventCache.cache.Insert(i, this);                                          //this takes place in front of c
+            }
+            if (i < 0) EventCache.cache.Add(this);
+        }
     }
 
     internal sealed class EventCache
@@ -26,6 +39,8 @@ namespace MCForge.API
                     r.method(e);
             });
         }
+
+
 
         //UNTESTED CODE
         //I need to test this..but I dont have anything to test it on so I'll leave it here for now
