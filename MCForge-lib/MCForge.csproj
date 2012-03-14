@@ -46,9 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Cancellable.cs" />
     <Compile Include="API\Event.cs" />
+    <Compile Include="API\EventCache.cs" />
+    <Compile Include="API\EventListener.cs" />
     <Compile Include="API\Player\PlayerConnectEvent.cs" />
     <Compile Include="API\Player\PlayerDisconnectEvent.cs" />
+    <Compile Include="API\Player\PlayerEvent.cs" />
     <Compile Include="API\Priority.cs" />
     <Compile Include="Blocks\Block.cs" />
     <Compile Include="Blocks\BlockAir.cs" />
