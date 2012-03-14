@@ -341,15 +341,9 @@
             System_Level - This should only be used for moderatoring actions and not change
             </summary>
         </member>
-        <member name="M:MCForge.API.Player.PlayerChatEvent.SetCancelled(System.Boolean)">
-            <summary>
-            Set the cancelled state on this event
-            </summary>
-            <param name="value">Weather or not the event will be cancelled</param>
-        </member>
         <member name="P:MCForge.API.Player.PlayerChatEvent.IsCancelled">
             <summary>
-            Weather or not the event is canceled
+            Gets/sets weather or not this event is canceled.
             </summary>
         </member>
     </members>

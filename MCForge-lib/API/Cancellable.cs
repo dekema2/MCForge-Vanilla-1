@@ -7,5 +7,6 @@ namespace MCForge.API
 {
     public interface Cancellable
     {
+        bool IsCancelled { get; set; }
     }
 }

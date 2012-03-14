@@ -17,17 +17,8 @@ namespace MCForge.API.Player
         }
 
         /// <summary>
-        /// Weather or not the event is canceled
+        /// Gets/sets weather or not this event is canceled.
         /// </summary>
-        public bool IsCancelled { get { return _cancelled; } }
-
-        /// <summary>
-        /// Set the cancelled state on this event
-        /// </summary>
-        /// <param name="value">Weather or not the event will be cancelled</param>
-        public void SetCancelled(bool value)
-        {
-            _cancelled = value;
-        }
+        public bool IsCancelled { get { return _cancelled; } set { _cancelled = value; } }
     }
 }
