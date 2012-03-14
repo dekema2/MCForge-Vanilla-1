@@ -1,10 +1,8 @@
 .metadata/*
 
 #Visual Studio files
-/bin
-/obj
-/Updater/bin
-/Updater/obj
+bin/
+obj/
 *.suo
 *.user
 *.[Cc]ache

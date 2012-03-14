@@ -1,5 +1,0 @@
-C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\LibMinecraft.Classic\bin\Debug\LibMinecraft.Classic.dll
-C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\LibMinecraft.Classic\bin\Debug\LibMinecraft.Classic.pdb
-C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\LibMinecraft.Classic\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\LibMinecraft.Classic\obj\Debug\LibMinecraft.Classic.dll
-C:\Users\Jarsky\Documents\Visual Studio 2010\Projects\MCForge-Vanilla\LibMinecraft.Classic\obj\Debug\LibMinecraft.Classic.pdb
